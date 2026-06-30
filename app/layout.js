@@ -11,9 +11,34 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = "https://genaieducate.com";
+const title = "GenAIEducate | Applied GenAI Engineering Program";
+const description =
+  "A 4-month applied AI engineering program. 16 weekends, 4 deployed projects, taught by a single practitioner instructor.";
+
 export const metadata = {
-  title: "GenAIEducate | Applied GenAI Engineering Program",
-  description: "A 4-month applied AI engineering program. 16 weekends, 4 deployed projects, taught by a single practitioner instructor.",
+  metadataBase: new URL(siteUrl),
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    url: siteUrl,
+    siteName: "GenAIEducate",
+    images: [{ url: "/og-image.png", width: 1024, height: 559 }],
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({ children }) {

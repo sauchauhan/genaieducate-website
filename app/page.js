@@ -7,195 +7,89 @@ export default function Home() {
   ];
 
   return (
-    <main style={{ background: "#FFF8F0", minHeight: "100vh" }}>
-      {/* ── NAV ───────────────────────────────────────────── */}
-      <nav
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "28px 56px",
-          borderBottom: "1px solid rgba(42,42,42,0.08)",
-        }}
-      >
-        <div style={{ fontFamily: "Georgia, serif", fontSize: 20, fontWeight: 700, color: "#1E5C4A", letterSpacing: 0.3 }}>
-          GenAI<span style={{ color: "#C94F1E" }}>Educate</span>
+    <main className="bg-cream min-h-screen">
+      <nav className="flex justify-between items-center px-5 py-5 sm:px-14 sm:py-7 border-b border-black/[0.08]">
+        <div className="font-heading text-xl font-bold text-forest tracking-[0.3px]">
+          GenAI<span className="text-terracotta">Educate</span>
         </div>
-        <div style={{ display: "flex", gap: 36, fontFamily: "Calibri, sans-serif", fontSize: 15, color: "#2A2A2A" }}>
-          <a href="#program" style={{ textDecoration: "none", color: "inherit" }}>Program</a>
-          <a href="#instructor" style={{ textDecoration: "none", color: "inherit" }}>Instructor</a>
-          <a href="#contact" style={{ textDecoration: "none", color: "inherit" }}>Contact</a>
+        <div className="flex gap-5 sm:gap-9 font-body text-sm sm:text-[15px] text-[#2A2A2A]">
+          <a href="#program" className="no-underline text-inherit">Program</a>
+          <a href="#instructor" className="no-underline text-inherit">Instructor</a>
+          <a href="#contact" className="no-underline text-inherit">Contact</a>
         </div>
       </nav>
 
-      {/* ── HERO ──────────────────────────────────────────── */}
-      <section style={{ padding: "100px 56px 80px", maxWidth: 880 }}>
-        <div
-          style={{
-            fontFamily: "Calibri, sans-serif",
-            fontSize: 13,
-            letterSpacing: 2,
-            textTransform: "uppercase",
-            color: "#C94F1E",
-            fontWeight: 600,
-            marginBottom: 28,
-          }}
-        >
+      <section className="px-5 pt-16 pb-14 sm:px-14 sm:pt-24 sm:pb-20 max-w-[880px]">
+        <div className="font-body text-xs tracking-[2px] uppercase text-terracotta font-semibold mb-6 sm:mb-7">
           A 4-month applied engineering program
         </div>
-        <h1
-          style={{
-            fontFamily: "Georgia, serif",
-            fontSize: 56,
-            lineHeight: 1.15,
-            color: "#1E5C4A",
-            fontWeight: 700,
-            margin: 0,
-            maxWidth: 760,
-          }}
-        >
-          AI engineering, taught the way it's actually practiced.
+        <h1 className="font-heading text-4xl sm:text-5xl lg:text-[56px] leading-[1.15] text-forest font-bold max-w-[760px] m-0">
+          AI engineering, taught the way it&apos;s actually practiced.
         </h1>
-        <p
-          style={{
-            fontFamily: "Calibri, sans-serif",
-            fontSize: 19,
-            lineHeight: 1.7,
-            color: "#2A2A2A",
-            marginTop: 28,
-            maxWidth: 620,
-          }}
-        >
+        <p className="font-body text-base sm:text-lg leading-7 sm:leading-[1.7] text-[#2A2A2A] mt-6 sm:mt-7 max-w-[620px]">
           Sixteen weekends. Four deployed projects. One instructor who built
           the entire curriculum from real engineering practice, not from a
           course template. For professionals who want to build, not just
           watch.
         </p>
-        <div style={{ display: "flex", gap: 16, marginTop: 44 }}>
+        <div className="flex flex-col sm:flex-row gap-4 mt-9 sm:mt-11">
           <a
             href="#program"
-            style={{
-              fontFamily: "Calibri, sans-serif",
-              fontSize: 15,
-              fontWeight: 600,
-              color: "#FFF8F0",
-              background: "#1E5C4A",
-              padding: "14px 28px",
-              borderRadius: 4,
-              textDecoration: "none",
-            }}
+            className="w-full sm:w-auto text-center font-body text-sm font-semibold text-cream bg-forest px-7 py-3.5 rounded no-underline"
           >
             See the curriculum
           </a>
           <a
             href="#contact"
-            style={{
-              fontFamily: "Calibri, sans-serif",
-              fontSize: 15,
-              fontWeight: 600,
-              color: "#1E5C4A",
-              padding: "14px 28px",
-              borderRadius: 4,
-              textDecoration: "none",
-              border: "1px solid rgba(30,92,74,0.3)",
-            }}
+            className="w-full sm:w-auto text-center font-body text-sm font-semibold text-forest border border-forest/30 px-7 py-3.5 rounded no-underline"
           >
             Ask a question
           </a>
         </div>
       </section>
 
-      {/* ── SIGNATURE ELEMENT: the curriculum spine ──────────── */}
-      <section id="program" style={{ padding: "40px 56px 100px" }}>
-        <div style={{ maxWidth: 1040, margin: "0 auto" }}>
-          <h2
-            style={{
-              fontFamily: "Georgia, serif",
-              fontSize: 28,
-              color: "#1E5C4A",
-              fontWeight: 700,
-              marginBottom: 8,
-            }}
-          >
+      <section id="program" className="px-5 py-10 sm:px-14 sm:pb-24">
+        <div className="max-w-[1040px] mx-auto">
+          <h2 className="font-heading text-2xl sm:text-[28px] text-forest font-bold mb-2">
             Sixteen weeks, in order
           </h2>
-          <p
-            style={{
-              fontFamily: "Calibri, sans-serif",
-              fontSize: 16,
-              color: "#666",
-              marginBottom: 48,
-              maxWidth: 560,
-            }}
-          >
+          <p className="font-body text-base text-[#666] mb-10 sm:mb-12 max-w-[560px]">
             Every month ends with a real, deployed project. Nothing is taught
             in isolation.
           </p>
 
-          <div style={{ borderTop: "1px solid rgba(42,42,42,0.12)" }}>
+          <div className="border-t border-black/[0.12]">
             {weeks.map((w, i) => (
               <div
                 key={i}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "60px 1fr 1fr 1fr",
-                  gap: 24,
-                  alignItems: "baseline",
-                  padding: "28px 0",
-                  borderBottom: "1px solid rgba(42,42,42,0.12)",
-                }}
+                className="flex flex-col gap-2 py-6 border-b border-black/[0.12] md:grid md:grid-cols-[60px_1fr_1fr_1fr] md:items-baseline md:gap-6 md:py-7"
               >
-                <div
-                  style={{
-                    fontFamily: "Georgia, serif",
-                    fontSize: 15,
-                    color: "#C94F1E",
-                    fontWeight: 700,
-                  }}
-                >
+                <div className="font-heading text-sm text-terracotta font-bold">
                   {w.month}
                 </div>
                 <div>
-                  <div
-                    style={{
-                      fontFamily: "Georgia, serif",
-                      fontSize: 20,
-                      color: "#1E5C4A",
-                      fontWeight: 700,
-                    }}
-                  >
+                  <div className="font-heading text-xl text-forest font-bold">
                     {w.title}
                   </div>
-                  <div
-                    style={{
-                      fontFamily: "Calibri, sans-serif",
-                      fontSize: 13,
-                      color: "#999",
-                      marginTop: 4,
-                    }}
-                  >
+                  <div className="font-body text-xs text-[#999] mt-1">
                     {w.weeks}
                   </div>
                 </div>
-                <div
-                  style={{
-                    fontFamily: "Calibri, sans-serif",
-                    fontSize: 15,
-                    color: "#2A2A2A",
-                    lineHeight: 1.5,
-                  }}
-                >
-                  {w.focus}
+                <div>
+                  <span className="md:hidden font-body text-xs uppercase tracking-wide text-[#999] block mb-1">
+                    Focus
+                  </span>
+                  <span className="font-body text-[15px] text-[#2A2A2A] leading-relaxed">
+                    {w.focus}
+                  </span>
                 </div>
-                <div
-                  style={{
-                    fontFamily: "Calibri, sans-serif",
-                    fontSize: 14,
-                    color: "#1E5C4A",
-                    fontWeight: 600,
-                  }}
-                >
-                  🏆 {w.project}
+                <div>
+                  <span className="md:hidden font-body text-xs uppercase tracking-wide text-[#999] block mb-1">
+                    Project
+                  </span>
+                  <span className="font-body text-sm text-forest font-semibold">
+                    🏆 {w.project}
+                  </span>
                 </div>
               </div>
             ))}
@@ -203,125 +97,48 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── INSTRUCTOR ───────────────────────────────────────── */}
-      <section
-        id="instructor"
-        style={{
-          background: "#1E5C4A",
-          padding: "90px 56px",
-        }}
-      >
-        <div style={{ maxWidth: 680, margin: "0 auto" }}>
-          <div
-            style={{
-              fontFamily: "Calibri, sans-serif",
-              fontSize: 13,
-              letterSpacing: 2,
-              textTransform: "uppercase",
-              color: "#C94F1E",
-              fontWeight: 600,
-              marginBottom: 24,
-            }}
-          >
+      <section id="instructor" className="bg-forest px-5 py-16 sm:px-14 sm:py-[90px]">
+        <div className="max-w-[680px] mx-auto">
+          <div className="font-body text-xs tracking-[2px] uppercase text-terracotta font-semibold mb-6">
             Why this is different
           </div>
-          <h2
-            style={{
-              fontFamily: "Georgia, serif",
-              fontSize: 34,
-              color: "#FFF8F0",
-              fontWeight: 700,
-              lineHeight: 1.3,
-              marginBottom: 28,
-            }}
-          >
+          <h2 className="font-heading text-2xl sm:text-3xl md:text-[34px] text-cream font-bold leading-snug mb-7">
             One instructor. Built from scratch. Iterated live, every weekend.
           </h2>
-          <p
-            style={{
-              fontFamily: "Calibri, sans-serif",
-              fontSize: 17,
-              color: "rgba(255,248,240,0.85)",
-              lineHeight: 1.8,
-            }}
-          >
-            This isn't a recorded library handed off to teaching assistants.
+          <p className="font-body text-base sm:text-[17px] text-cream/85 leading-7 sm:leading-[1.8]">
+            This isn&apos;t a recorded library handed off to teaching assistants.
             The curriculum was built session by session, tested against real
-            students, and rebuilt where it didn't land. Every project is
+            students, and rebuilt where it didn&apos;t land. Every project is
             something you deploy and can defend in an interview, not a
             notebook you run once and forget.
           </p>
         </div>
       </section>
 
-      {/* ── CONTACT ──────────────────────────────────────────── */}
-      <section id="contact" style={{ padding: "90px 56px", textAlign: "center" }}>
-        <h2
-          style={{
-            fontFamily: "Georgia, serif",
-            fontSize: 30,
-            color: "#1E5C4A",
-            fontWeight: 700,
-            marginBottom: 16,
-          }}
-        >
+      <section id="contact" className="px-5 py-16 sm:py-[90px] text-center">
+        <h2 className="font-heading text-2xl sm:text-[30px] text-forest font-bold mb-4">
           Questions before the next cohort?
         </h2>
-        <p
-          style={{
-            fontFamily: "Calibri, sans-serif",
-            fontSize: 16,
-            color: "#666",
-            marginBottom: 36,
-          }}
-        >
+        <p className="font-body text-base text-[#666] mb-9">
           Reach out directly. No forms, no funnels.
         </p>
-        <div style={{ display: "flex", gap: 16, justifyContent: "center" }}>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center sm:items-stretch max-w-xs sm:max-w-none mx-auto">
           <a
             href="mailto:hello@genaieducate.com"
-            style={{
-              fontFamily: "Calibri, sans-serif",
-              fontSize: 15,
-              fontWeight: 600,
-              color: "#1E5C4A",
-              border: "1px solid rgba(30,92,74,0.3)",
-              padding: "14px 28px",
-              borderRadius: 4,
-              textDecoration: "none",
-            }}
+            className="w-full sm:w-auto text-center font-body text-sm font-semibold text-forest border border-forest/30 px-7 py-3.5 rounded no-underline"
           >
             Email us
           </a>
           <a
-            href="https://wa.me/91XXXXXXXXXX"
-            style={{
-              fontFamily: "Calibri, sans-serif",
-              fontSize: 15,
-              fontWeight: 600,
-              color: "#FFF8F0",
-              background: "#C94F1E",
-              padding: "14px 28px",
-              borderRadius: 4,
-              textDecoration: "none",
-            }}
+            href="https://wa.me/919326392693?text=Hi%20Saurav%2C%20I%20just%20visited%20the%20GenAIEducate%20website.%20Could%20you%20tell%20me%20more%20about%20the%20next%20cohort%3F"
+            className="w-full sm:w-auto text-center font-body text-sm font-semibold text-cream bg-terracotta px-7 py-3.5 rounded no-underline"
           >
             WhatsApp
           </a>
         </div>
       </section>
 
-      {/* ── FOOTER ───────────────────────────────────────────── */}
-      <footer
-        style={{
-          borderTop: "1px solid rgba(42,42,42,0.08)",
-          padding: "32px 56px",
-          fontFamily: "Calibri, sans-serif",
-          fontSize: 13,
-          color: "#999",
-          textAlign: "center",
-        }}
-      >
+      <footer className="border-t border-black/[0.08] px-5 py-8 sm:px-14 font-body text-xs text-[#999] text-center">
         GenAIEducate · Institute for Generative AI
       </footer>
     </main>
