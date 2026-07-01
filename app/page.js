@@ -1,3 +1,5 @@
+import HeroAnimation from './components/HeroAnimation';
+
 export default function Home() {
   const weeks = [
     { month: "01", title: "Foundations", weeks: "Week 1–4", focus: "Python, LLM internals, prompt engineering", project: "Smart CLI Chatbot" },
@@ -8,6 +10,7 @@ export default function Home() {
 
   return (
     <main className="bg-cream min-h-screen">
+      <HeroAnimation />
       <nav className="flex justify-between items-center px-5 py-5 sm:px-14 sm:py-7 border-b border-black/[0.08]">
         <div className="font-heading text-xl font-bold text-forest tracking-[0.3px]">
           GenAI<span className="text-terracotta">Educate</span>
