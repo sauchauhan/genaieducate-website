@@ -60,49 +60,86 @@ export default function Home() {
         <div className="font-heading text-xl font-bold text-cream tracking-[0.3px]">
           GenAI<span className="text-terracotta">Educate</span>
         </div>
-        <div className="flex gap-5 sm:gap-9 font-body text-sm sm:text-[15px] text-cream/85">
-          <a href="#services" className="no-underline text-inherit hover:text-cream transition-colors">Services</a>
-          <a href="#curriculum" className="no-underline text-inherit hover:text-cream transition-colors">Curriculum</a>
-          <a href="#contact" className="no-underline text-inherit hover:text-cream transition-colors">Contact</a>
+        <div className="flex items-center gap-5 sm:gap-9">
+          <div className="hidden sm:flex gap-9 font-body text-[15px] text-cream/85">
+            <a href="#services" className="no-underline text-inherit hover:text-cream transition-colors">Services</a>
+            <a href="#curriculum" className="no-underline text-inherit hover:text-cream transition-colors">Curriculum</a>
+            <a href="#why" className="no-underline text-inherit hover:text-cream transition-colors">Why us</a>
+          </div>
+          <a
+            href="#contact"
+            className="font-body text-xs sm:text-sm font-semibold text-cream bg-terracotta px-4 py-2 sm:px-5 sm:py-2.5 rounded-sm no-underline whitespace-nowrap"
+          >
+            Start a conversation
+          </a>
         </div>
       </nav>
 
       {/* Problem statement + positioning */}
-      <section className="px-5 pt-16 pb-14 sm:px-14 sm:pt-24 sm:pb-20 max-w-[880px]">
-        <div className="font-mono text-xs tracking-[2px] uppercase text-terracotta font-semibold mb-6 sm:mb-7">
-          The AI skills gap
-        </div>
-        <h1 className="font-heading text-4xl sm:text-5xl lg:text-[56px] leading-[1.15] text-forest font-bold max-w-[760px] m-0">
-          AI is reshaping every engineering role. Most professionals are not ready for it.
-        </h1>
-        <p className="font-body text-base sm:text-lg leading-7 sm:leading-[1.7] text-dark mt-6 sm:mt-7 max-w-[620px]">
-          We train engineers and engineering teams to build, deploy, and manage
-          AI systems. Structured programs built from real engineering
-          practice, not workshops that skim the surface.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 mt-9 sm:mt-11">
-          <a
-            href="#services"
-            className="w-full sm:w-auto text-center font-body text-sm font-semibold text-cream bg-terracotta px-7 py-3.5 rounded-sm no-underline"
-          >
-            See our programs
-          </a>
-          <a
-            href="#contact"
-            className="w-full sm:w-auto text-center font-body text-sm font-semibold text-forest border-[1.5px] border-forest px-7 py-3.5 rounded-sm no-underline"
-          >
-            Start a conversation
-          </a>
+      <section className="px-5 pt-16 pb-14 sm:px-14 sm:pt-24 sm:pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-12 lg:gap-16 items-start">
+          <div className="max-w-[720px]">
+            <div className="font-mono text-xs tracking-[2px] uppercase text-terracotta font-semibold mb-6 sm:mb-7">
+              The AI skills gap
+            </div>
+            <h1 className="font-heading text-4xl sm:text-5xl lg:text-[64px] leading-[1.05] tracking-tight text-forest font-bold m-0">
+              AI is reshaping every engineering role. Most professionals are not ready for it.
+            </h1>
+            <p className="font-body text-base sm:text-lg leading-7 sm:leading-[1.7] text-dark mt-6 sm:mt-7 max-w-[560px]">
+              We train engineers and engineering teams to build, deploy, and manage
+              AI systems. Structured programs built from real engineering
+              practice, not workshops that skim the surface.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 mt-9 sm:mt-11">
+              <a
+                href="#services"
+                className="w-full sm:w-auto text-center font-body text-sm font-semibold text-cream bg-terracotta px-7 py-3.5 rounded-sm no-underline"
+              >
+                See our programs
+              </a>
+              <a
+                href="#contact"
+                className="w-full sm:w-auto text-center font-body text-sm font-semibold text-forest border-[1.5px] border-forest px-7 py-3.5 rounded-sm no-underline"
+              >
+                Start a conversation
+              </a>
+            </div>
+          </div>
+
+          <div className="border-[1.5px] border-forest rounded p-7 bg-cream w-full">
+            <div className="font-mono text-xs tracking-[2px] uppercase text-forest font-semibold mb-6 pb-5 border-b border-forest/20">
+              The program at a glance
+            </div>
+            <div className="flex flex-col gap-5">
+              {[
+                { n: "16", label: "Weekends of live, applied instruction" },
+                { n: "04", label: "Projects deployed, not just prototyped" },
+                { n: "100%", label: "Practitioner-led, zero filler" },
+              ].map((s) => (
+                <div key={s.label} className="flex items-baseline gap-4">
+                  <div className="font-mono text-2xl text-terracotta font-bold w-16 shrink-0">
+                    {s.n}
+                  </div>
+                  <div className="font-body text-sm text-dark leading-snug">
+                    {s.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Services overview */}
       <section id="services" className="px-5 py-10 sm:px-14 sm:pb-24 border-t-2 border-forest">
         <div className="max-w-[1100px] mx-auto pt-14 sm:pt-20">
-          <div className="font-mono text-xs tracking-[2px] uppercase text-terracotta font-semibold mb-4">
-            What we offer
+          <div className="flex items-center gap-4 mb-10 sm:mb-14">
+            <span className="font-mono text-xs tracking-[2px] uppercase text-terracotta font-semibold whitespace-nowrap">
+              What we offer
+            </span>
+            <span className="flex-1 h-px bg-[#E2DCCE]" />
           </div>
-          <h2 className="font-heading text-2xl sm:text-[28px] text-forest font-bold mb-10 sm:mb-14 max-w-[560px]">
+          <h2 className="font-heading text-3xl sm:text-[34px] text-forest font-bold mb-10 sm:mb-14 max-w-[560px] leading-tight">
             A training firm, not a single course.
           </h2>
 
@@ -110,7 +147,7 @@ export default function Home() {
             {services.map((s) => (
               <div
                 key={s.index}
-                className="flex flex-col border border-[#E2DCCE] rounded p-7 bg-white"
+                className="flex flex-col border border-[#E2DCCE] rounded p-7 bg-white transition-all hover:border-forest hover:shadow-[0_4px_20px_rgba(30,92,74,0.1)] hover:-translate-y-0.5"
               >
                 <div className="font-mono text-sm text-terracotta font-bold mb-5">
                   {s.index}
@@ -144,10 +181,13 @@ export default function Home() {
       {/* Curriculum spine */}
       <section id="curriculum" className="px-5 py-10 sm:px-14 sm:pb-24 border-t-2 border-forest">
         <div className="max-w-[1040px] mx-auto pt-14 sm:pt-20">
-          <div className="font-mono text-xs tracking-[2px] uppercase text-terracotta font-semibold mb-4">
-            Applied GenAI Engineering Program
+          <div className="flex items-center gap-4 mb-4">
+            <span className="font-mono text-xs tracking-[2px] uppercase text-terracotta font-semibold whitespace-nowrap">
+              Applied GenAI Engineering Program
+            </span>
+            <span className="flex-1 h-px bg-[#E2DCCE]" />
           </div>
-          <h2 className="font-heading text-2xl sm:text-[28px] text-forest font-bold mb-2">
+          <h2 className="font-heading text-3xl sm:text-[34px] text-forest font-bold mb-2 leading-tight">
             Sixteen weeks, in order
           </h2>
           <p className="font-body text-base text-[#666] mb-10 sm:mb-12 max-w-[560px]">
@@ -159,7 +199,7 @@ export default function Home() {
             {curriculum.map((w, i) => (
               <div
                 key={i}
-                className="flex flex-col gap-3 py-6 border-b border-[#E2DCCE] md:grid md:grid-cols-[60px_1fr_1fr_1fr] md:items-center md:gap-6 md:py-7"
+                className="flex flex-col gap-3 py-6 px-4 -mx-4 border-b border-[#E2DCCE] transition-colors hover:bg-cream md:grid md:grid-cols-[60px_1fr_1fr_1fr] md:items-center md:gap-6 md:py-7"
               >
                 <div className="font-mono text-sm text-cream font-bold bg-forest rounded-sm w-11 h-11 flex items-center justify-center">
                   {w.month}
@@ -197,8 +237,11 @@ export default function Home() {
       {/* Why GenAIEducate */}
       <section id="why" className="bg-forest px-5 py-16 sm:px-14 sm:py-[90px] border-t-2 border-forest">
         <div className="max-w-[1040px] mx-auto">
-          <div className="font-mono text-xs tracking-[2px] uppercase text-terracotta font-semibold mb-10 sm:mb-14">
-            Why GenAIEducate
+          <div className="flex items-center gap-4 mb-10 sm:mb-14">
+            <span className="font-mono text-xs tracking-[2px] uppercase text-terracotta font-semibold whitespace-nowrap">
+              Why GenAIEducate
+            </span>
+            <span className="flex-1 h-px bg-cream/20" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {differentiators.map((d) => (
@@ -220,7 +263,7 @@ export default function Home() {
 
       {/* Contact */}
       <section id="contact" className="px-5 py-16 sm:py-[90px] text-center border-t-2 border-forest">
-        <h2 className="font-heading text-2xl sm:text-[30px] text-forest font-bold mb-4">
+        <h2 className="font-heading text-3xl sm:text-[34px] text-forest font-bold mb-4 leading-tight">
           Start a conversation
         </h2>
         <p className="font-body text-base text-[#666] mb-9 max-w-[520px] mx-auto">

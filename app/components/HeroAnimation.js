@@ -16,6 +16,7 @@ const MEETING_QUESTIONS = [
 ];
 
 const TYPING_SPEED = 60;
+const PAUSE_BETWEEN_QUESTIONS = 700;
 const STRUGGLE_FOCUS_DURATION = 2400;
 const DOTS_DURATION = 800;
 const COLLAPSE_DELAY = 1800;
@@ -320,23 +321,47 @@ function CollapsedBar() {
       style={{
         background: "#1E5C4A",
         borderRadius: 8,
-        padding: "12px 28px",
+        padding: "10px 20px",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+        gap: 16,
         margin: "0 24px",
         boxShadow: "0 2px 16px rgba(30,92,74,0.12)",
       }}
     >
-      <div style={{ display: "flex", gap: 20, fontSize: 12, color: "rgba(255,248,240,0.55)", fontFamily: "'Consolas', monospace", flexWrap: "wrap" }}>
+      <div
+        className="collapsed-bar-scroll"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "clamp(10px, 2vw, 20px)",
+          fontSize: "clamp(9px, 1.6vw, 12px)",
+          color: "rgba(255,248,240,0.55)",
+          fontFamily: "'Consolas', monospace",
+          whiteSpace: "nowrap",
+          overflowX: "auto",
+          flex: 1,
+          minWidth: 0,
+        }}
+      >
         {allQuestions.map((q, i) => (
-          <span key={i} style={{ display: "flex", alignItems: "center", gap: 20 }}>
+          <span key={i} style={{ display: "flex", alignItems: "center", gap: "clamp(10px, 2vw, 20px)" }}>
             <span>{q}</span>
             {i < allQuestions.length - 1 && <span style={{ color: "rgba(255,248,240,0.2)" }}>|</span>}
           </span>
         ))}
       </div>
-      <span style={{ fontSize: 13, color: "#C94F1E", fontWeight: 600, fontFamily: "Calibri, sans-serif", whiteSpace: "nowrap", marginLeft: 20 }}>
+      <span
+        style={{
+          fontSize: "clamp(10px, 1.8vw, 13px)",
+          color: "#C94F1E",
+          fontWeight: 600,
+          fontFamily: "Calibri, sans-serif",
+          whiteSpace: "nowrap",
+          flexShrink: 0,
+        }}
+      >
         We teach the answers ↓
       </span>
     </div>
@@ -391,10 +416,15 @@ export default function HeroAnimation() {
       await wait(DOTS_DURATION);
       setDots(false);
       await typeQuestion(questions[i], setText);
-      // Question just landed — hold and buzz on the struggler's reaction before moving on.
-      setStruggling(true);
-      await wait(STRUGGLE_FOCUS_DURATION);
-      setStruggling(false);
+      const isLastQuestion = i === questions.length - 1;
+      if (isLastQuestion) {
+        // All questions asked — hold and buzz on the struggler's reaction before leaving the scene.
+        setStruggling(true);
+        await wait(STRUGGLE_FOCUS_DURATION);
+        setStruggling(false);
+      } else {
+        await wait(PAUSE_BETWEEN_QUESTIONS);
+      }
       setText("");
       setIndex(i + 1);
     }
@@ -439,6 +469,13 @@ export default function HeroAnimation() {
           40% { transform: translateX(3px) scale(1.09); }
           60% { transform: translateX(-3px) scale(1.07); }
           80% { transform: translateX(2px) scale(1.05); }
+        }
+        .collapsed-bar-scroll {
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
+        .collapsed-bar-scroll::-webkit-scrollbar {
+          display: none;
         }
       `}</style>
 
