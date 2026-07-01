@@ -16,7 +16,7 @@ const MEETING_QUESTIONS = [
 ];
 
 const TYPING_SPEED = 60;
-const PAUSE_BETWEEN_QUESTIONS = 900;
+const STRUGGLE_FOCUS_DURATION = 2400;
 const DOTS_DURATION = 800;
 const COLLAPSE_DELAY = 1800;
 
@@ -204,7 +204,7 @@ function QuestionBubble({ questions, currentIndex, currentText, showDots, side }
 
 /* ── STRUGGLE BUBBLE ───────────────────────────────────── */
 
-function StruggleBubble({ intensity }) {
+function StruggleBubble({ intensity, buzzing }) {
   const marks = "? ".repeat(Math.min(intensity + 1, 4)).trim();
 
   return (
@@ -216,10 +216,11 @@ function StruggleBubble({ intensity }) {
         minWidth: 60,
         textAlign: "center",
         position: "relative",
-        boxShadow: "0 2px 12px rgba(201,79,30,0.2)",
+        boxShadow: buzzing ? "0 4px 16px rgba(201,79,30,0.35)" : "0 2px 12px rgba(201,79,30,0.2)",
         border: "1px solid rgba(255,248,240,0.1)",
-        transition: "all 0.3s ease",
+        transition: "box-shadow 0.3s ease, transform 0.3s ease",
         transform: intensity > 2 ? "scale(1.05)" : "scale(1)",
+        animation: buzzing ? "struggleBuzz 0.5s ease-in-out infinite" : "none",
       }}
     >
       <div
@@ -252,7 +253,7 @@ function StruggleBubble({ intensity }) {
 
 /* ── SCENE ─────────────────────────────────────────────── */
 
-function Scene({ title, askerLabel, strugglerLabel, questions, AskerFigure, side, currentIndex, currentText, showDots }) {
+function Scene({ title, askerLabel, strugglerLabel, questions, AskerFigure, side, currentIndex, currentText, showDots, isStruggling }) {
   return (
     <div style={{ flex: 1, padding: "36px 28px", display: "flex", flexDirection: "column", alignItems: "center" }}>
       {/* Scene label */}
@@ -293,7 +294,7 @@ function Scene({ title, askerLabel, strugglerLabel, questions, AskerFigure, side
         {/* Struggler */}
         <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
           {currentIndex > 0 || currentText ? (
-            <StruggleBubble intensity={currentIndex} />
+            <StruggleBubble intensity={currentIndex} buzzing={isStruggling} />
           ) : (
             <div style={{ height: 48 }} />
           )}
@@ -350,10 +351,12 @@ export default function HeroAnimation() {
   const [s1Index, setS1Index] = useState(0);
   const [s1Text, setS1Text] = useState("");
   const [s1Dots, setS1Dots] = useState(true);
+  const [s1Struggling, setS1Struggling] = useState(false);
   // Scene 2 state
   const [s2Index, setS2Index] = useState(0);
   const [s2Text, setS2Text] = useState("");
   const [s2Dots, setS2Dots] = useState(true);
+  const [s2Struggling, setS2Struggling] = useState(false);
   // Which scene is active
   const [activeScene, setActiveScene] = useState(1);
 
@@ -380,7 +383,7 @@ export default function HeroAnimation() {
     }
   }
 
-  async function animateScene(questions, setIndex, setText, setDots) {
+  async function animateScene(questions, setIndex, setText, setDots, setStruggling) {
     for (let i = 0; i < questions.length; i++) {
       setIndex(i);
       setDots(true);
@@ -388,7 +391,10 @@ export default function HeroAnimation() {
       await wait(DOTS_DURATION);
       setDots(false);
       await typeQuestion(questions[i], setText);
-      await wait(PAUSE_BETWEEN_QUESTIONS);
+      // Question just landed — hold and buzz on the struggler's reaction before moving on.
+      setStruggling(true);
+      await wait(STRUGGLE_FOCUS_DURATION);
+      setStruggling(false);
       setText("");
       setIndex(i + 1);
     }
@@ -397,12 +403,12 @@ export default function HeroAnimation() {
   async function startAnimation() {
     // Scene 1: Interview
     setActiveScene(1);
-    await animateScene(INTERVIEW_QUESTIONS, setS1Index, setS1Text, setS1Dots);
+    await animateScene(INTERVIEW_QUESTIONS, setS1Index, setS1Text, setS1Dots, setS1Struggling);
     await wait(400);
 
     // Scene 2: Meeting
     setActiveScene(2);
-    await animateScene(MEETING_QUESTIONS, setS2Index, setS2Text, setS2Dots);
+    await animateScene(MEETING_QUESTIONS, setS2Index, setS2Text, setS2Dots, setS2Struggling);
 
     // Collapse
     await wait(COLLAPSE_DELAY);
@@ -426,6 +432,13 @@ export default function HeroAnimation() {
         @keyframes fadeInScene {
           from { opacity: 0; transform: translateY(8px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes struggleBuzz {
+          0%, 100% { transform: translateX(0) scale(1.05); }
+          20% { transform: translateX(-3px) scale(1.07); }
+          40% { transform: translateX(3px) scale(1.09); }
+          60% { transform: translateX(-3px) scale(1.07); }
+          80% { transform: translateX(2px) scale(1.05); }
         }
       `}</style>
 
@@ -467,6 +480,7 @@ export default function HeroAnimation() {
                 currentIndex={s1Index}
                 currentText={s1Text}
                 showDots={s1Dots && activeScene === 1}
+                isStruggling={s1Struggling && activeScene === 1}
               />
             </div>
 
@@ -488,6 +502,7 @@ export default function HeroAnimation() {
                 currentIndex={s2Index}
                 currentText={s2Text}
                 showDots={s2Dots && activeScene === 2}
+                isStruggling={s2Struggling && activeScene === 2}
               />
             </div>
           </div>
