@@ -26,6 +26,24 @@ export default function About() {
     { name: "Time Series Forecasting", ratings: "4.9" },
   ];
 
+  const instructors = [
+    {
+      initials: "SC",
+      name: "Saurav Chauhan",
+      role: "Founder & Lead Instructor, GenAI Engineering",
+      bio: "15+ years in software and AI engineering, with 3+ years teaching Data Science and Generative AI to working professionals at a leading edtech platform, before founding GenAIEducate.",
+      stats: ["15+ yrs industry experience", "200+ professionals trained", "4.85/5 rating"],
+    },
+    {
+      initials: "??",
+      name: "Partner name",
+      role: "Partner & Lead Instructor, AI for QA",
+      bio: "Full profile coming soon.",
+      stats: ["Profile in progress"],
+      placeholder: true,
+    },
+  ];
+
   const philosophy = [
     {
       n: "01",
@@ -55,11 +73,60 @@ export default function About() {
             Teach less. Go deeper.
           </h1>
           <p className="font-body text-base sm:text-lg leading-7 sm:leading-[1.7] text-cream/80 mt-6 sm:mt-7 max-w-[600px]">
-            GenAIEducate is built and taught by a practitioner instructor,
+            GenAIEducate is built and taught by practitioner instructors,
             not a curriculum team assembling slides. Every session comes from
             direct engineering practice and years of teaching it live to
             working professionals.
           </p>
+        </div>
+      </section>
+
+      {/* Meet the instructors */}
+      <section className="bg-white px-5 py-12 sm:px-14 sm:py-20 lg:py-24">
+        <div className="max-w-[1040px] mx-auto">
+          <div className="flex items-center gap-4 mb-10 sm:mb-14">
+            <span className="font-mono text-xs tracking-[2px] uppercase text-terracotta font-semibold whitespace-nowrap">
+              Meet the instructors
+            </span>
+            <span className="flex-1 h-px bg-[#E2DCCE]" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {instructors.map((p) => (
+              <div
+                key={p.name}
+                className={`bg-white border border-[#E0E0E0] border-l-4 rounded p-7 ${p.placeholder ? "border-l-[#CCCCCC]" : "border-l-terracotta"}`}
+              >
+                <div className="flex items-center gap-4 mb-5">
+                  <div
+                    className={`shrink-0 w-14 h-14 flex items-center justify-center rounded-sm font-mono text-lg font-bold ${p.placeholder ? "bg-lightgray text-[#999] border border-[#DCDCDC]" : "bg-forest text-cream"}`}
+                  >
+                    {p.initials}
+                  </div>
+                  <div>
+                    <h3 className="font-heading text-lg text-forest font-bold m-0">
+                      {p.name}
+                    </h3>
+                    <div className="font-body text-sm text-[#666]">
+                      {p.role}
+                    </div>
+                  </div>
+                </div>
+                <p className="font-body text-[15px] text-dark leading-relaxed mb-5">
+                  {p.bio}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {p.stats.map((s) => (
+                    <span
+                      key={s}
+                      className="font-mono text-xs text-forest bg-lightgray px-3 py-1.5 rounded-full"
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

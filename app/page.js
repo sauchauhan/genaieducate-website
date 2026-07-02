@@ -39,7 +39,7 @@ export default function Home() {
 
   const stats = [
     { n: "4.85/5", label: "Avg. instructor rating across 14+ subjects" },
-    { n: "115+", label: "Professionals trained" },
+    { n: "200+", label: "Professionals trained" },
     { n: "3+ years", label: "Consistent teaching track record" },
     { n: "100%", label: "Would recommend, from current cohort" },
   ];
