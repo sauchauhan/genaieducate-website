@@ -494,8 +494,9 @@ export default function HeroAnimation() {
           <div
             style={{
               display: "flex",
-              maxWidth: 960,
+              maxWidth: "min(90vw, 1280px)",
               margin: "0 auto",
+              padding: "0 24px",
             }}
           >
             {/* Scene 1: Interview */}
