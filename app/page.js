@@ -1,4 +1,6 @@
 import HeroAnimation from './components/HeroAnimation';
+import Nav from './components/Nav';
+import Footer from './components/Footer';
 
 export default function Home() {
   const services = [
@@ -7,7 +9,7 @@ export default function Home() {
       label: "For engineering teams",
       title: "Corporate AI Training",
       body: "Customized training programs for engineering teams adopting AI. We work with your team's existing stack and build training around your actual use cases.",
-      href: "#contact",
+      href: "/contact",
       cta: "Talk to us",
     },
     {
@@ -15,15 +17,15 @@ export default function Home() {
       label: "Our flagship cohort",
       title: "Applied GenAI Engineering Program",
       body: "A structured four-month cohort: sixteen weekends, four deployed projects, interview preparation built in. Runs in regular cycles.",
-      href: "#curriculum",
-      cta: "See the curriculum",
+      href: "/program",
+      cta: "See the full program",
     },
     {
       index: "03",
       label: "For decision-makers",
       title: "AI Workshops",
       body: "Shorter-format sessions for product managers, business leaders, and other decision-makers. Understanding AI well enough to decide, without writing code.",
-      href: "#contact",
+      href: "/contact",
       cta: "Ask about workshops",
     },
   ];
@@ -86,24 +88,7 @@ export default function Home() {
     <main className="bg-white min-h-screen">
       <HeroAnimation />
 
-      <nav className="sticky top-0 z-50 flex justify-between items-center px-5 py-5 sm:px-14 sm:py-6 bg-forest">
-        <div className="font-heading text-xl font-bold text-cream tracking-[0.3px]">
-          GenAI<span className="text-terracotta">Educate</span>
-        </div>
-        <div className="flex items-center gap-5 sm:gap-9">
-          <div className="hidden sm:flex gap-9 font-body text-[15px] text-cream/85">
-            <a href="#services" className="no-underline text-inherit hover:text-cream transition-colors">Services</a>
-            <a href="#curriculum" className="no-underline text-inherit hover:text-cream transition-colors">Curriculum</a>
-            <a href="#why" className="no-underline text-inherit hover:text-cream transition-colors">Why us</a>
-          </div>
-          <a
-            href="#contact"
-            className="font-body text-xs sm:text-sm font-semibold text-cream bg-terracotta px-4 py-2 sm:px-5 sm:py-2.5 rounded-sm no-underline whitespace-nowrap"
-          >
-            Start a conversation
-          </a>
-        </div>
-      </nav>
+      <Nav />
 
       {/* Section 2: Problem statement + positioning */}
       <section className={`relative bg-forest px-5 py-12 sm:px-14 sm:py-20 lg:py-24 overflow-hidden ${dotPattern}`}>
@@ -349,23 +334,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Section 8: Footer */}
-      <footer className="bg-dark px-5 py-8 sm:px-14">
-        <div className="flex flex-col sm:flex-row gap-4 justify-between items-center max-w-[1100px] mx-auto">
-          <div className="font-heading text-base font-bold text-cream">
-            GenAI<span className="text-terracotta">Educate</span>
-            <span className="font-body text-xs text-[#999] font-normal ml-3">Institute for Generative AI</span>
-          </div>
-          <div className="flex gap-6 font-body text-xs text-[#999]">
-            <a href="#services" className="no-underline text-inherit hover:text-cream transition-colors">Services</a>
-            <a href="#curriculum" className="no-underline text-inherit hover:text-cream transition-colors">Curriculum</a>
-            <a href="#contact" className="no-underline text-inherit hover:text-cream transition-colors">Contact</a>
-          </div>
-          <div className="font-body text-xs text-[#999]">
-            &copy; 2026 GenAIEducate
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }
