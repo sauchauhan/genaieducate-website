@@ -146,7 +146,7 @@ export default function Home() {
             <span className="flex-1 h-px bg-[#DCDCDC]" />
           </div>
           <h2 className="font-heading text-3xl sm:text-[34px] text-forest font-bold mb-10 sm:mb-14 max-w-[560px] leading-tight">
-            A training firm, not a single course.
+            How we work with engineers and teams.
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
