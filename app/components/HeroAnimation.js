@@ -46,7 +46,7 @@ function TypingDots() {
 
 function InterviewerFigure() {
   return (
-    <svg width="70" height="110" viewBox="0 0 70 110" fill="none">
+    <svg style={{ width: "clamp(70px, 8vw, 130px)", height: "clamp(110px, 12.6vw, 204px)" }} viewBox="0 0 70 110" fill="none">
       {/* Head */}
       <circle cx="35" cy="18" r="14" stroke="#1E5C4A" strokeWidth="2.5" strokeLinecap="round" />
       {/* Body */}
@@ -70,7 +70,7 @@ function InterviewerFigure() {
 
 function StrugglingFigure({ color }) {
   return (
-    <svg width="70" height="110" viewBox="0 0 70 110" fill="none">
+    <svg style={{ width: "clamp(70px, 8vw, 130px)", height: "clamp(110px, 12.6vw, 204px)" }} viewBox="0 0 70 110" fill="none">
       {/* Head */}
       <circle cx="35" cy="18" r="14" stroke={color} strokeWidth="2.5" strokeLinecap="round" />
       {/* Worried eyebrows */}
@@ -94,7 +94,7 @@ function StrugglingFigure({ color }) {
 
 function LeadershipFigure() {
   return (
-    <svg width="70" height="110" viewBox="0 0 70 110" fill="none">
+    <svg style={{ width: "clamp(70px, 8vw, 130px)", height: "clamp(110px, 12.6vw, 204px)" }} viewBox="0 0 70 110" fill="none">
       {/* Head */}
       <circle cx="35" cy="18" r="14" stroke="#1E5C4A" strokeWidth="2.5" strokeLinecap="round" />
       {/* Body */}
@@ -132,10 +132,10 @@ function QuestionBubble({ questions, currentIndex, currentText, showDots, side }
     <div
       style={{
         background: "#1E5C4A",
-        borderRadius: 14,
-        padding: "14px 18px",
-        minWidth: 200,
-        maxWidth: 240,
+        borderRadius: "clamp(14px, 1.5vw, 20px)",
+        padding: "clamp(14px, 1.6vw, 22px) clamp(18px, 2vw, 28px)",
+        minWidth: "clamp(200px, 20vw, 320px)",
+        maxWidth: "clamp(240px, 24vw, 380px)",
         position: "relative",
         boxShadow: "0 2px 12px rgba(30,92,74,0.15)",
         border: "1px solid rgba(255,248,240,0.08)",
@@ -147,7 +147,7 @@ function QuestionBubble({ questions, currentIndex, currentText, showDots, side }
           key={i}
           style={{
             fontFamily: "'Consolas', 'Courier New', monospace",
-            fontSize: 13,
+            fontSize: "clamp(13px, 1.4vw, 19px)",
             color: i < currentIndex - 1 ? "rgba(255,248,240,0.35)" : "rgba(255,248,240,0.7)",
             lineHeight: 1.6,
             marginBottom: 4,
@@ -163,10 +163,10 @@ function QuestionBubble({ questions, currentIndex, currentText, showDots, side }
         <div
           style={{
             fontFamily: "'Consolas', 'Courier New', monospace",
-            fontSize: 13,
+            fontSize: "clamp(13px, 1.4vw, 19px)",
             color: "#FFF8F0",
             lineHeight: 1.6,
-            minHeight: 22,
+            minHeight: "clamp(22px, 2.4vw, 32px)",
           }}
         >
           {showDots ? <TypingDots /> : currentText}
@@ -212,9 +212,9 @@ function StruggleBubble({ intensity, buzzing }) {
     <div
       style={{
         background: "#C94F1E",
-        borderRadius: 14,
-        padding: "10px 18px",
-        minWidth: 60,
+        borderRadius: "clamp(14px, 1.5vw, 20px)",
+        padding: "clamp(10px, 1.2vw, 16px) clamp(18px, 2vw, 26px)",
+        minWidth: "clamp(60px, 7vw, 100px)",
         textAlign: "center",
         position: "relative",
         boxShadow: buzzing ? "0 4px 16px rgba(201,79,30,0.35)" : "0 2px 12px rgba(201,79,30,0.2)",
@@ -226,7 +226,7 @@ function StruggleBubble({ intensity, buzzing }) {
     >
       <div
         style={{
-          fontSize: intensity > 2 ? 26 : 22,
+          fontSize: intensity > 2 ? "clamp(26px, 3vw, 38px)" : "clamp(22px, 2.6vw, 32px)",
           color: "#FFF8F0",
           letterSpacing: 6,
           fontWeight: 700,
@@ -256,17 +256,17 @@ function StruggleBubble({ intensity, buzzing }) {
 
 function Scene({ title, askerLabel, strugglerLabel, questions, AskerFigure, side, currentIndex, currentText, showDots, isStruggling }) {
   return (
-    <div style={{ flex: 1, padding: "36px 28px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+    <div style={{ flex: 1, padding: "clamp(36px, 4vw, 56px) clamp(28px, 3vw, 44px)", display: "flex", flexDirection: "column", alignItems: "center" }}>
       {/* Scene label */}
       <div
         style={{
-          fontSize: 11,
+          fontSize: "clamp(11px, 1.2vw, 16px)",
           letterSpacing: 2.5,
           textTransform: "uppercase",
           color: "#C94F1E",
           fontWeight: 600,
           fontFamily: "Calibri, sans-serif",
-          marginBottom: 28,
+          marginBottom: "clamp(28px, 3vw, 44px)",
           alignSelf: "flex-start",
         }}
       >
@@ -274,7 +274,7 @@ function Scene({ title, askerLabel, strugglerLabel, questions, AskerFigure, side
       </div>
 
       {/* Characters */}
-      <div style={{ display: "flex", gap: 36, alignItems: "flex-start", justifyContent: "center", width: "100%" }}>
+      <div style={{ display: "flex", gap: "clamp(36px, 4vw, 64px)", alignItems: "flex-start", justifyContent: "center", width: "100%" }}>
         {/* Asker */}
         <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
           <QuestionBubble
@@ -284,10 +284,10 @@ function Scene({ title, askerLabel, strugglerLabel, questions, AskerFigure, side
             showDots={showDots}
             side="left"
           />
-          <div style={{ marginTop: 14 }}>
+          <div style={{ marginTop: "clamp(14px, 1.6vw, 24px)" }}>
             <AskerFigure />
           </div>
-          <div style={{ fontSize: 11, color: "#1E5C4A", fontWeight: 600, marginTop: 6, fontFamily: "Calibri, sans-serif" }}>
+          <div style={{ fontSize: "clamp(11px, 1.2vw, 15px)", color: "#1E5C4A", fontWeight: 600, marginTop: "clamp(6px, 0.8vw, 10px)", fontFamily: "Calibri, sans-serif" }}>
             {askerLabel}
           </div>
         </div>
@@ -297,12 +297,12 @@ function Scene({ title, askerLabel, strugglerLabel, questions, AskerFigure, side
           {currentIndex > 0 || currentText ? (
             <StruggleBubble intensity={currentIndex} buzzing={isStruggling} />
           ) : (
-            <div style={{ height: 48 }} />
+            <div style={{ height: "clamp(48px, 5.4vw, 76px)" }} />
           )}
-          <div style={{ marginTop: 14 }}>
+          <div style={{ marginTop: "clamp(14px, 1.6vw, 24px)" }}>
             <StrugglingFigure color="#C94F1E" />
           </div>
-          <div style={{ fontSize: 11, color: "#C94F1E", fontWeight: 600, marginTop: 6, fontFamily: "Calibri, sans-serif" }}>
+          <div style={{ fontSize: "clamp(11px, 1.2vw, 15px)", color: "#C94F1E", fontWeight: 600, marginTop: "clamp(6px, 0.8vw, 10px)", fontFamily: "Calibri, sans-serif" }}>
             {strugglerLabel}
           </div>
         </div>
@@ -488,7 +488,7 @@ export default function HeroAnimation() {
           justifyContent: "center",
           boxSizing: "border-box",
           transition: "height 0.8s cubic-bezier(0.4, 0, 0.2, 1), padding 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
-          height: phase === "collapsed" || phase === "collapsing" ? 80 : "100dvh",
+          height: phase === "collapsed" || phase === "collapsing" ? 80 : "calc(100dvh - clamp(76px, 9vw, 92px))",
           padding: phase === "collapsed" || phase === "collapsing" ? "12px 0" : "20px 0",
         }}
       >
