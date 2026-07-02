@@ -11,83 +11,290 @@ The official website for **GenAIEducate**, a sole proprietorship training firm f
 - **Repo:** github.com/sauchauhan/genaieducate-website
 
 ## Brand system
-- **Colors:** Cream `#FFF8F0`, Forest Green `#1E5C4A`, Rust/Terracotta `#C94F1E`, Dark `#2A2A2A`
-- **Fonts:** Georgia/Lora for headings (font-heading), Calibri/DM Sans for body (font-body), Consolas for code
+- **Colors:** Cream `#FFF8F0`, Forest Green `#1E5C4A`, Rust/Terracotta `#C94F1E`, Dark `#2A2A2A`, Light Gray `#F5F5F5`
+- **Fonts:** Georgia/Lora for headings (font-heading), Calibri/DM Sans for body (font-body), Consolas for code/accents/numbers
 - **Logo:** Shield with teal/dark blue geometric cube design, gold border accents, circuit board background elements. Tagline: "Institute for Generative AI"
-- **Tone:** Professional, restrained, credibility-first. NOT a course-mill or bootcamp vibe. Think serious institute, not Udemy clone. Target audience is software professionals and corporate decision-makers who are image-conscious.
 
-## Design philosophy
-- Minimalist, editorial feel. No aggressive sales tactics, countdown timers, or neon gradients.
-- Lead with the problem (people can't answer AI questions in interviews or make AI decisions at work), then present GenAIEducate as the solution.
-- The hero animation (already built in `app/components/HeroAnimation.js`) plays two scenes showing this problem, then collapses into a thin bar.
-- Content should feel like it was written by an engineer, not a marketer.
-- No em dashes anywhere (AI giveaway) — use commas, colons, or pipes instead.
+---
 
-## Current pages and what they should contain
+## Design direction: SHARP, not soft
 
-### 1. Home (app/page.js) — PARTIALLY BUILT
-**Animation:** Done. Two scenes (interview + corporate meeting) showing AI knowledge gaps, collapses to thin bar.
-**Below the animation, add:**
-- Services overview section. GenAIEducate is NOT just a weekend class. Position it as a firm that provides:
-  - **Corporate AI Training** — customized programs for companies adopting AI
-  - **Applied GenAI Engineering Program** — the flagship 4-month cohort (the one currently shown)
-  - **AI Workshops** — shorter workshops for non-technical professionals (product managers, business leaders)
-- This services framing matters because corporate clients visiting the site need to see that we serve their needs, not just individual learners.
-- Keep the existing curriculum section but frame it as one offering under a broader services umbrella.
+The site must read as a **technical training firm**, not a weekend tutoring page or a blog post. Same brand colors, but used with maximum contrast and precision.
 
-### 2. Program page (app/program/page.js) — NOT BUILT YET
-- Overview of all programs/offerings GenAIEducate provides
-- The Applied GenAI Engineering Program (4-month cohort) should be the featured/detailed one
-- Show that cohorts run regularly (every few months)
-- Include the 16-week curriculum breakdown (currently on homepage, can be moved or duplicated here with more detail)
-- Don't just dump the curriculum — frame it as "this is what you'll be able to do after each month"
+### CRITICAL: Why the current site looks like a blog (fix all of these)
+1. **Zero visual density** — entire page is text flowing downward with no visual containers. Fix: use cards, grids, badges, icons.
+2. **No section contrast** — page is one continuous cream surface. Fix: alternate backgrounds between white, dark green, light gray, white, dark green.
+3. **No social proof** — no numbers, ratings, testimonials, or external validation anywhere. Fix: add Track Record section.
+4. **Single-product framing** — reads like "one course I teach." Fix: display 3 services as distinct product cards.
+5. **No icons or visual anchors** — 100% typography. Fix: use Unicode symbols (◆, →, ✓, ●) or simple SVG icons as visual markers.
+6. **Navigation too thin** — 3 small anchor links on a cream bar. Fix: dark green nav bar with logo, links, and a CTA button.
+7. **No visual landing pad after animation** — visitor lands on plain text. Fix: full-width dark section with bold declaration.
+8. **Text paragraphs instead of structured layouts** — differentiators and curriculum are just flowing text. Fix: cards, grids, timeline structures.
 
-### 3. About page (app/about/page.js) — NOT BUILT YET
-- Saurav's story: Data Science educator, built the curriculum from scratch, iterated it live with real students
-- Prior edtech platform experience
-- The philosophy: "teach less, go deeper" — cover fewer topics with more thoroughness
-- Demo-first approach: every session opens with a live demo of the finished product
-- Emphasize practitioner background, not academic credentials
-- Target this at corporate professionals and aspiring AI engineers
-- Keep it authentic and human, not a generic founder bio
+### Key design rules
+1. **Base background:** White (`#FFFFFF`) as primary. Light gray (`#F5F5F5`) for alternating sections. Cream (`#FFF8F0`) only for very subtle accent areas. Never cream everywhere.
+2. **Navigation bar:** Dark forest green (`#1E5C4A`) background with white/cream text. Include a terracotta CTA button ("Start a Conversation"). This is non-negotiable.
+3. **Border radius:** 2px for buttons and pills. 4px max for cards. Never 8px+ rounded corners.
+4. **Borders:** Solid 1px borders with real color, not faint rgba. Cards should have visible definition.
+5. **Card shadows:** Subtle `shadow-sm` or `shadow` for service cards and testimonial cards. Not flat, not heavy.
+6. **Primary CTA button:** Rust/terracotta (`#C94F1E`) background with cream text.
+7. **Secondary CTA button:** Forest green solid border (1.5px), no fill, forest green text.
+8. **Typography:** Bold, deliberate weight contrast. Headings hit hard. Use monospace (`Consolas`, `font-mono`) for numbers, stats, labels, and technical accents.
+9. **Section dividers:** Each section should have distinct background color. No need for border lines when sections alternate properly.
+10. **Section padding:** Generous vertical padding (80-100px on desktop, 48-64px on mobile). Each section must feel like a distinct "room", not text continuation.
+11. **Visual markers:** Use Unicode symbols (◆, →, ✓, ●, |) or simple SVG as visual anchors next to text. Break up text-only sections.
+12. **Left border accents on cards:** Service cards should have a 3-4px left border in terracotta or forest green for visual punch.
+13. **Overall feel:** Consulting firm meets engineering school. Think McKinsey report meets GitHub documentation. NOT Udemy, NOT Coursera, NOT a blog.
 
-### 4. Contact page (app/contact/page.js) — NOT BUILT YET
-- Simple and clean
-- WhatsApp link with pre-filled message: `https://wa.me/919326392963?text=Hi%20Saurav%2C%20I%20just%20visited%20the%20GenAIEducate%20website.%20Could%20you%20tell%20me%20more%20about%20the%20next%20cohort%3F`
-- Email: hello@genaieducate.com (not yet configured, will be set up later)
-- No forms or funnels — direct contact only
+### Tone of voice
+- Professional but not corporate-stiff. Written by an engineer, not a marketer.
+- Specific and concrete, never vague or fluffy.
+- No em dashes (AI writing giveaway), use commas, colons, or pipes instead.
+- No exclamation marks in body copy.
+- No "unlock", "empower", "leverage", "seamless", "cutting-edge", "world-class".
+- Always "we" and "our" when referring to GenAIEducate. Never "I" or "my".
+- "Our programs" not "my classes". "Our team" not "me".
 
-## The Applied GenAI Engineering Program (flagship offering)
-- 4 months, every weekend (Sunday 9-11 AM IST)
-- 16 sessions, 120-150 minutes each
-- Format: 30 min theory + 70 min hands-on coding + 15 min interview Q&A + 10 min close
-- 4 portfolio projects (one per month): Smart CLI Chatbot, Document Q&A App, AI Research Agent, Capstone Deployment
-- Stack: Python, OpenAI API, LangChain, ChromaDB, LangGraph, MCP, FastAPI, Docker
-- Price: ₹9,000 per cohort
-- Two batches currently running: March 2026 batch (advanced weeks) and June 2026 batch (started 21 June)
-- Target: beginners with basic Python who want to become job-ready AI engineers
+---
 
-## Services GenAIEducate offers (or aspires to offer)
-1. **Applied GenAI Engineering Program** — the cohort-based training (running now)
-2. **Corporate AI Training** — customized for companies (aspiration, building toward this)
-3. **AI Workshops for Non-Technical Teams** — shorter format for product managers, business leaders (aspiration)
-4. **AI Implementation Consulting** — helping mid-market Indian companies adopt AI (long-term goal)
+## Target audience
+
+**Primary:** Software professionals (3-10 years experience) who feel the AI knowledge gap in interviews and at work. They are image-conscious, evaluate training providers critically, and will not engage with anything that looks like a cheap course or a personal blog.
+
+**Secondary:** Corporate L&D heads and engineering managers looking for team training solutions. They need to see "this is a firm that serves companies" not "this is one person teaching on weekends."
+
+---
+
+## Instructor track record data (use across homepage, about page, etc.)
+
+### From 3+ years at a leading edtech platform (Oct 2023 - Feb 2026)
+- **Overall mentoring rating:** 4.85 / 5 (consistent across 3 years)
+- **Total engagement count:** 56 sessions
+- **Total engagement hours:** 112 hours delivered
+- **Total learners impacted:** 115+ working professionals
+- **Average sessions per month:** 2
+- **Subjects taught (all rated 4.5-4.9/5):**
+  - SQL: 4.8, 4.9
+  - Introduction to Generative AI: 4.9
+  - Machine Learning 1: 4.7
+  - Machine Learning 2: 4.9, 4.9
+  - Unsupervised Learning: 4.7, 4.9
+  - Predictive Modeling: 4.8, 4.9
+  - Inferential Statistics: 4.9, 4.9
+  - Python for Data Science: 4.7, 4.8
+  - Time Series Forecasting: 4.9
+- **Key takeaway:** Consistently rated 4.5+ across 14+ different subjects over 3 years. This proves teaching quality is not subject-dependent.
+
+### From current GenAI program (June 2026 batch, 11 respondents)
+- **100%** said the program "opened their eyes" or "completely transformed" their understanding of AI
+- **100%** said the cost is "a bargain for the things I am learning"
+- **100%** said the program is "way ahead" compared to free YouTube tutorials or other AI content
+- **100%** said they would recommend the program (mix of "already have" and "yes, I would")
+- **73%** (8 of 11) said they are "very confident" it will help in interviews/career
+- **27%** (3 of 11) said "hopeful but too early to say" (honest, expected response for early weeks)
+- **0%** negative responses on any question
+
+### Selected student quotes (use verbatim, do NOT fix grammar — imperfect English proves authenticity)
+
+**Quote 1 (best, shows the exact problem we solve):**
+"I was following lot of contents and stuck what is best or what is not so important. The way this class structured is what really guiding me to right path."
+
+**Quote 2 (signals corporate relevance):**
+"It's little different from the online tutorials because it takes real time corporate scenarios in classroom."
+
+**Quote 3 (hands-on emphasis):**
+"The hands on approach to the concepts is the thing I like the most in this course."
+
+**Quote 4 (structured learning):**
+"A very structured program with quality of material and curriculum. Covering from step a to z."
+
+**Quote 5 (fundamentals depth):**
+"As someone very keen to learning AI stuffs, I feel this sessions so far is filling lot of fundamentals I missed to learn."
+
+**Quote 6 (real-world examples):**
+"The sessions are very well explained, and the concepts are easy to understand. I especially appreciate the real production examples shared, as they make it much easier to relate the topics to practical scenarios."
+
+**Quote 7 (effort and dedication):**
+"Its very effective to understand the way we think of what AI is. Definitely its not easy thing so need dedication and attention to this subject. The trainer is putting lots of efforts."
+
+### How to use this data on the homepage
+
+**Stats row (4 numbers, prominent):**
+
+| 4.85 / 5 | 115+ | 3+ years | 100% |
+|-----------|------|----------|------|
+| Avg. instructor rating across 14+ subjects | Professionals trained | Consistent teaching track record | "Would recommend" from current cohort |
+
+**Below the stats, add 2-3 of these proof points as small text badges or a single line:**
+- "100% of current cohort rated the cost as a bargain"
+- "100% said this program is way ahead of free online content"
+- "Rated 4.5+ across 14 different subjects over 3 years"
+
+**Then show 2 student quotes** (Quote 1 and Quote 2 are strongest for the homepage)
+
+**One-line context below quotes:**
+"Previously: 3+ years as Data Science instructor at a leading edtech platform, delivering live programs to working professionals across SQL, Python, Machine Learning, Statistics, and Generative AI."
+
+---
+
+## Homepage content structure (app/page.js)
+
+The homepage tells this story: Problem → Who we are → What we offer → Proof of depth → Evidence it works → Contact
+
+### Section 1: Hero Animation (ALREADY BUILT — DO NOT MODIFY)
+- File: `app/components/HeroAnimation.js`
+- Two scenes showing AI knowledge gaps (interview + corporate meeting)
+- Collapses to thin bar after playing
+- DO NOT touch this component unless specifically asked
+
+### Section 2: Problem statement + positioning
+- **Background:** Dark forest green (`#1E5C4A`), full-width
+- **Layout:** Large white heading (Georgia, bold), cream subtext below
+- This is the first text the visitor reads after the animation
+- Content: Acknowledge the problem directly. AI is reshaping every engineering role, most professionals are unprepared. Then position GenAIEducate.
+- Tone: "We train engineers and teams to build, deploy, and manage AI systems" — NOT "Learn AI from an expert instructor"
+- This section must have visual weight. It's a bold declaration, not a blog paragraph.
+- Consider a subtle pattern or texture overlay on the dark background for depth.
+
+### Section 3: Services overview
+- **Background:** Light gray (`#F5F5F5`)
+- **Layout:** 3 cards in a horizontal row on desktop, stacked on mobile
+- **Card design:** White background, 1px solid border, 4px border-radius, subtle shadow, 3-4px left border accent in terracotta
+- Each card has: monospace number label at top ("01", "02", "03"), bold title, 2-3 lines of description
+- Small arrow or "Learn more →" link at bottom of each card (even if it goes nowhere yet)
+
+**Card 1: Corporate AI Training**
+- Customized training programs for engineering teams
+- Companies adopting AI need structured upskilling, not YouTube tutorials
+- "We work with your team's existing stack and build training around your actual use cases"
+
+**Card 2: Applied GenAI Engineering Program**
+- The flagship 4-month cohort program
+- 16 weekends, 4 deployed projects, interview preparation built in
+- Runs in regular cycles. Next cohort starting soon.
+
+**Card 3: AI Workshops**
+- Shorter format workshops for non-technical teams
+- Product managers, business leaders, decision-makers
+- "Understanding AI well enough to make informed decisions, without writing code"
+
+### Section 4: Curriculum spine (for the flagship program)
+- **Background:** White (`#FFFFFF`)
+- **Layout:** Structured grid or horizontal timeline, NOT a flat table
+- Use monospace month numbers ("01", "02", "03", "04") as large visual anchors
+- Week ranges as small badges (e.g., green background pill with white text "Week 1-4")
+- Project names as bold callouts with trophy emoji or marker
+- Section heading: "The Applied GenAI Engineering Program" with subtext "16 weekends. 4 deployed projects. Zero to production."
+- This section proves depth and rigor to technical visitors who will scan it.
+
+Month breakdown:
+| Month | Title | Weeks | Focus | Project |
+|-------|-------|-------|-------|---------|
+| 01 | Foundations | 1-4 | Python, LLM internals, prompt engineering | Smart CLI Chatbot |
+| 02 | LangChain + RAG | 5-9 | Embeddings, vector search, retrieval pipelines | Document Q&A App |
+| 03 | Agents + Orchestration | 10-13 | LangGraph, multi-agent systems, MCP | AI Research Agent |
+| 04 | Production + Career | 14-16 | FastAPI, Docker, cloud deployment, security | Capstone Deployment |
+
+### Section 5: Track Record (social proof)
+- **Background:** Light gray (`#F5F5F5`)
+- **Layout:** Three parts stacked
+- Section heading: "Track Record" or "Built on evidence, not claims"
+
+**Part A: Stats row**
+4 stats in a horizontal grid with large monospace numbers:
+- 4.85 / 5 → Avg. instructor rating across 14+ subjects
+- 115+ → Professionals trained
+- 3+ years → Consistent teaching track record
+- 100% → "Would recommend" from current cohort
+
+**Part B: Proof point badges (small, subtle, below the stats)**
+Display as small text pills or a clean single line:
+- "100% rated the cost as a bargain"
+- "100% said way ahead of free online content"
+- "Rated 4.5+ across 14 different subjects"
+
+**Part C: Student quotes (2 quotes, card layout)**
+Cards with large quotation mark ("), quote text, "— Program participant" below.
+
+Quote 1: "I was following lot of contents and stuck what is best or what is not so important. The way this class structured is what really guiding me to right path."
+
+Quote 2: "It's little different from the online tutorials because it takes real time corporate scenarios in classroom."
+
+Do NOT fix the grammar in these quotes. The imperfect English proves they are real.
+
+**Part D: Context line**
+Small text below quotes: "Previously: 3+ years as Data Science instructor at a leading edtech platform, delivering live programs to working professionals across SQL, Python, Machine Learning, Statistics, and Generative AI."
+
+### Section 6: Why GenAIEducate (differentiators)
+- **Background:** White (`#FFFFFF`)
+- **Layout:** 3-4 items as horizontal cards or a numbered list with visual markers
+- NOT a paragraph of text. Each point is a distinct visual element.
+
+Points:
+1. **Practitioner-built curriculum** — not theory from textbooks. Every session built from real engineering practice.
+2. **Tested live, rebuilt where it failed** — iterated across multiple cohorts. What didn't land got rewritten.
+3. **Projects you deploy, not notebooks you run** — every project gets a live URL. Every project is interview-defensible.
+4. **Interview preparation built in** — every session ends with interview Q&A. Not a separate module, part of the fabric.
+
+### Section 7: Contact
+- **Background:** Dark forest green (`#1E5C4A`)
+- **Heading:** "Start a conversation" (white, Georgia)
+- **Subtext:** "Whether you're exploring for yourself or evaluating for your team, we're happy to talk." (cream)
+- **Buttons:** WhatsApp (terracotta, primary) and Email (white outline, secondary)
+- WhatsApp link: `https://wa.me/919326392693?text=Hi%20Saurav%2C%20I%20just%20visited%20the%20GenAIEducate%20website.%20Could%20you%20tell%20me%20more%20about%20the%20next%20cohort%3F`
+- Email: `mailto:hello@genaieducate.com`
+
+### Section 8: Footer
+- **Background:** Dark (`#2A2A2A`) or very dark forest green
+- Clean single row: GenAIEducate logo/text on left, "Institute for Generative AI" tagline, copyright
+- Optional: small nav links (Program, About, Contact)
+- Keep minimal. No social media icons yet.
+
+---
+
+## Other pages (NOT BUILT YET, build later)
+
+### Program page (app/program/page.js)
+- Detailed view of all offerings
+- Full curriculum breakdown for the flagship cohort
+- "Apply for next cohort" or "Talk to us" CTA
+
+### About page (app/about/page.js)
+- Saurav's background as a practitioner and educator
+- The philosophy: teach less, go deeper
+- Demo-first teaching approach
+- Full track record data from the "Instructor track record data" section above
+- Subjects taught with ratings, total hours, total learners
+- Target this at corporate audience, not personal blog
+
+### Contact page (app/contact/page.js)
+- WhatsApp + Email
+- No forms, no funnels
+- Clean, simple, direct
+
+---
 
 ## Important rules for code changes
 - Always use Tailwind CSS v3 classes, not inline styles
-- Keep the existing Tailwind config and custom color/font definitions
-- Mobile-responsive: the site must work well on phones (many visitors will come from LinkedIn/WhatsApp links on mobile)
-- No unnecessary dependencies — keep the project lean
+- Mobile-responsive: must work well on phones (many visitors from LinkedIn/WhatsApp links on mobile)
+- No unnecessary dependencies, keep the project lean
 - Test locally with `npm run dev` before pushing
 - Push to GitHub triggers auto-deploy on Vercel
-
-## Navigation
-The nav bar currently has: Program, Instructor, Contact (as anchor links on the homepage).
-When we add proper pages, update to: Home, Program, About, Contact (as actual page links).
+- Do not modify `app/components/HeroAnimation.js` unless specifically asked
+- Do not install new npm packages without confirming
 
 ## Things NOT to do
-- Don't add a pricing section to the public website yet
-- Don't mention the free batch for disadvantaged students (that's a separate initiative, never used as marketing)
+- Don't add pricing to the public website
+- Don't mention the free batch for disadvantaged students (separate initiative, never used for marketing)
 - Don't use stock photos or AI-generated images
-- Don't add animations beyond the hero animation without discussing first
-- Don't install new npm packages without confirming the need
+- Don't add animations beyond the hero animation without asking
+- Don't use "I" or "my" when referring to GenAIEducate, always "we" and "our"
+- Don't make it sound like a solo tutor's page
+- Don't polish the grammar in student quotes (imperfect English proves authenticity)
+- Don't add countdown timers, urgency banners, or aggressive sales tactics
+- Don't add university affiliations or partnerships that don't exist
+- Don't use carousel/slider components for testimonials (professionals see through those)
+- Don't name the previous edtech platform (Great Learning) explicitly, just say "a leading edtech platform"
+
+## WhatsApp number note
+The correct WhatsApp number is 919326392693. Verify this matches what's in the code. A previous version had 919326392963 (last four digits swapped), which would send inquiries to a wrong number. Fix this if it's still wrong.
