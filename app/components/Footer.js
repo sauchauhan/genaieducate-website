@@ -12,6 +12,7 @@ export default function Footer() {
           <Link href="/program" className="no-underline text-inherit hover:text-cream transition-colors">Program</Link>
           <Link href="/about" className="no-underline text-inherit hover:text-cream transition-colors">About</Link>
           <Link href="/contact" className="no-underline text-inherit hover:text-cream transition-colors">Contact</Link>
+          <Link href="/verify" className="no-underline text-inherit hover:text-cream transition-colors">Verify a Certificate →</Link>
         </div>
         <div className="font-body text-xs text-[#999]">
           &copy; 2026 GenAIEducate
