@@ -483,8 +483,12 @@ export default function HeroAnimation() {
         style={{
           background: "#FFF8F0",
           overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          boxSizing: "border-box",
           transition: "height 0.8s cubic-bezier(0.4, 0, 0.2, 1), padding 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
-          height: phase === "collapsed" || phase === "collapsing" ? 80 : 520,
+          height: phase === "collapsed" || phase === "collapsing" ? 80 : "100dvh",
           padding: phase === "collapsed" || phase === "collapsing" ? "12px 0" : "20px 0",
         }}
       >
