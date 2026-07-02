@@ -67,6 +67,11 @@ The site must read as a **technical training firm**, not a weekend tutoring page
 
 ## Instructor track record data (use across homepage, about page, etc.)
 
+### Career totals (headline stats, use for the primary "Professionals trained" figure)
+- **15+ years** in software and AI industry experience
+- **3+ years** specifically training/teaching (see edtech platform breakdown below)
+- **200+ professionals trained**, a broader career total across corporate training and platform engagements. This is NOT the same number as the 115+ below, which is a specific, documented subset (one edtech platform engagement). Use 200+ for headline stats; use 115+ only when presenting that engagement's specific breakdown (56 sessions / 112 hours / 115+).
+
 ### From 3+ years at a leading edtech platform (Oct 2023 - Feb 2026)
 - **Overall mentoring rating:** 4.85 / 5 (consistent across 3 years)
 - **Total engagement count:** 56 sessions
@@ -121,14 +126,14 @@ The site must read as a **technical training firm**, not a weekend tutoring page
 
 **Stats row (4 numbers, prominent):**
 
-| 4.85 / 5 | 115+ | 3+ years | 100% |
+| 4.85 / 5 | 200+ | 3+ years | 100% |
 |-----------|------|----------|------|
 | Avg. instructor rating across 14+ subjects | Professionals trained | Consistent teaching track record | "Would recommend" from current cohort |
 
 **Below the stats, add 2-3 of these proof points as small text badges or a single line:**
-- "100% of current cohort rated the cost as a bargain"
-- "100% said this program is way ahead of free online content"
-- "Rated 4.5+ across 14 different subjects over 3 years"
+- "100% rated the cost as a bargain"
+- "100% said way ahead of free online content"
+- "Rated 4.5+ across 14 different subjects"
 
 **Then show 2 student quotes** (Quote 1 and Quote 2 are strongest for the homepage)
 
@@ -153,15 +158,14 @@ The homepage tells this story: Problem → Who we are → What we offer → Proo
 - This is the first text the visitor reads after the animation
 - Content: Acknowledge the problem directly. AI is reshaping every engineering role, most professionals are unprepared. Then position GenAIEducate.
 - Tone: "We train engineers and teams to build, deploy, and manage AI systems" — NOT "Learn AI from an expert instructor"
-- This section must have visual weight. It's a bold declaration, not a blog paragraph.
-- Consider a subtle pattern or texture overlay on the dark background for depth.
+- This section must have visual weight. It is a bold declaration, not a blog paragraph.
 
 ### Section 3: Services overview
 - **Background:** Light gray (`#F5F5F5`)
 - **Layout:** 3 cards in a horizontal row on desktop, stacked on mobile
 - **Card design:** White background, 1px solid border, 4px border-radius, subtle shadow, 3-4px left border accent in terracotta
 - Each card has: monospace number label at top ("01", "02", "03"), bold title, 2-3 lines of description
-- Small arrow or "Learn more →" link at bottom of each card (even if it goes nowhere yet)
+- Small "Learn more →" at bottom of each card
 
 **Card 1: Corporate AI Training**
 - Customized training programs for engineering teams
@@ -182,10 +186,9 @@ The homepage tells this story: Problem → Who we are → What we offer → Proo
 - **Background:** White (`#FFFFFF`)
 - **Layout:** Structured grid or horizontal timeline, NOT a flat table
 - Use monospace month numbers ("01", "02", "03", "04") as large visual anchors
-- Week ranges as small badges (e.g., green background pill with white text "Week 1-4")
+- Week ranges as small badges (green background pill with white text "Week 1-4")
 - Project names as bold callouts with trophy emoji or marker
 - Section heading: "The Applied GenAI Engineering Program" with subtext "16 weekends. 4 deployed projects. Zero to production."
-- This section proves depth and rigor to technical visitors who will scan it.
 
 Month breakdown:
 | Month | Title | Weeks | Focus | Project |
@@ -198,17 +201,16 @@ Month breakdown:
 ### Section 5: Track Record (social proof)
 - **Background:** Light gray (`#F5F5F5`)
 - **Layout:** Three parts stacked
-- Section heading: "Track Record" or "Built on evidence, not claims"
+- Section heading: "Built on evidence, not claims"
 
 **Part A: Stats row**
 4 stats in a horizontal grid with large monospace numbers:
 - 4.85 / 5 → Avg. instructor rating across 14+ subjects
-- 115+ → Professionals trained
+- 200+ → Professionals trained (career total)
 - 3+ years → Consistent teaching track record
 - 100% → "Would recommend" from current cohort
 
-**Part B: Proof point badges (small, subtle, below the stats)**
-Display as small text pills or a clean single line:
+**Part B: Proof point badges**
 - "100% rated the cost as a bargain"
 - "100% said way ahead of free online content"
 - "Rated 4.5+ across 14 different subjects"
@@ -223,12 +225,11 @@ Quote 2: "It's little different from the online tutorials because it takes real 
 Do NOT fix the grammar in these quotes. The imperfect English proves they are real.
 
 **Part D: Context line**
-Small text below quotes: "Previously: 3+ years as Data Science instructor at a leading edtech platform, delivering live programs to working professionals across SQL, Python, Machine Learning, Statistics, and Generative AI."
+Small text: "Previously: 3+ years as Data Science instructor at a leading edtech platform, delivering live programs to working professionals across SQL, Python, Machine Learning, Statistics, and Generative AI."
 
 ### Section 6: Why GenAIEducate (differentiators)
 - **Background:** White (`#FFFFFF`)
-- **Layout:** 3-4 items as horizontal cards or a numbered list with visual markers
-- NOT a paragraph of text. Each point is a distinct visual element.
+- **Layout:** 3-4 items as horizontal cards with visual markers, NOT a paragraph of text
 
 Points:
 1. **Practitioner-built curriculum** — not theory from textbooks. Every session built from real engineering practice.
@@ -247,7 +248,7 @@ Points:
 ### Section 8: Footer
 - **Background:** Dark (`#2A2A2A`) or very dark forest green
 - Clean single row: GenAIEducate logo/text on left, "Institute for Generative AI" tagline, copyright
-- Optional: small nav links (Program, About, Contact)
+- Add "Verify a Certificate →" link pointing to /verify
 - Keep minimal. No social media icons yet.
 
 ---
@@ -274,6 +275,168 @@ Points:
 
 ---
 
+## Certificate System (BUILD THIS)
+
+### Overview
+A two-part system:
+1. **Public verification page** at `genaieducate.com/verify` — anyone can enter a certificate ID and see the student's details
+2. **Certificate PDF generator script** — run locally by Saurav when issuing certificates to students
+
+### Data storage: Google Sheets
+- A private Google Sheet acts as the certificate database
+- Columns: `certificate_id`, `student_name`, `program_name`, `completion_date`, `issue_date`, `status`
+- Status values: `active` or `revoked`
+- Example row: `GEE-2026-0001`, `Rahul Sharma`, `Applied GenAI Engineering Program`, `June 2026`, `July 2026`, `active`
+- New certificates are added manually by Saurav (just adding a row to the sheet)
+
+### Certificate ID format
+`GEE-YYYY-XXXX` where:
+- `GEE` = GenAI Educate
+- `YYYY` = year of completion
+- `XXXX` = 4-digit sequential number (0001, 0002, etc.)
+- Example: `GEE-2026-0001`
+
+### Part 1: Public verification page (app/verify/page.js)
+
+**URL:** genaieducate.com/verify
+
+**Design:** Follow the same sharp design system as the rest of the site. White background, dark green nav, consistent typography. This page should feel like a serious institutional verification tool, not an afterthought.
+
+**Layout:**
+- Page heading: "Certificate Verification"
+- Subtext: "Enter a GenAIEducate certificate ID to verify its authenticity."
+- Input field: clean, full-width on mobile, centered on desktop, placeholder "e.g. GEE-2026-0001"
+- Verify button: terracotta background, cream text
+- Result area below the button showing one of three states:
+
+**State 1: Valid certificate (green accent card)**
+```
+✓ Certificate Verified
+Name: Rahul Sharma
+Program: Applied GenAI Engineering Program
+Completed: June 2026
+Issued: July 2026
+Certificate ID: GEE-2026-0001
+Issued by: GenAIEducate — Institute for Generative AI
+```
+
+**State 2: Invalid / not found (red accent card)**
+```
+✗ Certificate Not Found
+No certificate matching this ID exists in our records.
+If you believe this is an error, contact hello@genaieducate.com
+```
+
+**State 3: Revoked (orange accent card)**
+```
+⚠ Certificate Revoked
+This certificate has been revoked and is no longer valid.
+Contact hello@genaieducate.com for more information.
+```
+
+**UX rules:**
+- Input should auto-uppercase as user types (so GEE-2026-0001 and gee-2026-0001 both work)
+- Trim whitespace from input before querying
+- Show a loading spinner while the API call is in progress
+- Clear the result if the user starts typing a new ID
+- The verify page should pre-fill the ID if it's passed as a URL parameter: `/verify?id=GEE-2026-0001`
+
+### Part 2: API route (app/api/verify-certificate/route.js)
+
+This is a Next.js API route that:
+1. Receives a POST request with `{ certificateId: "GEE-2026-0001" }`
+2. Calls the Google Sheets API server-side to look up the ID
+3. Returns the certificate data or a not-found response
+
+**Response format (valid):**
+```json
+{
+  "status": "valid",
+  "data": {
+    "certificateId": "GEE-2026-0001",
+    "studentName": "Rahul Sharma",
+    "programName": "Applied GenAI Engineering Program",
+    "completionDate": "June 2026",
+    "issueDate": "July 2026"
+  }
+}
+```
+
+**Response format (not found):**
+```json
+{ "status": "not_found" }
+```
+
+**Response format (revoked):**
+```json
+{ "status": "revoked" }
+```
+
+**Error handling:**
+- If Google Sheets API fails, return `{ "status": "error" }` and show a friendly message on the frontend
+- Never expose raw error messages to the public page
+- Add rate limiting: maximum 10 requests per minute per IP to prevent scraping
+
+### Part 3: Environment variables
+
+Add to `.env.local` for development and to Vercel's Environment Variables for production:
+
+```
+GOOGLE_SHEETS_SPREADSHEET_ID=your_sheet_id_here
+GOOGLE_SERVICE_ACCOUNT_EMAIL=your_service_account@your_project.iam.gserviceaccount.com
+GOOGLE_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----"
+```
+
+**Package needed:** `googleapis` (npm install googleapis)
+
+### Part 4: Certificate PDF generator (scripts/generate-certificate.js)
+
+A script Saurav runs locally on his laptop to generate a certificate PDF for a student.
+
+**Usage:**
+```
+node scripts/generate-certificate.js --id GEE-2026-0001 --name "Rahul Sharma" --date "June 2026"
+```
+
+**Certificate PDF design (A4 landscape):**
+- Forest green top and bottom bars with gold accent lines (matches signboard design)
+- Rust side accent stripes
+- Large "GenAIEducate" heading (GenAI in forest green, Educate in rust)
+- "Institute for Generative AI" tagline
+- "CERTIFICATE OF COMPLETION" in spaced uppercase
+- Student name in large Georgia font (the hero element of the certificate)
+- "has successfully completed the" in regular weight
+- Program name: "Applied GenAI Engineering Program" in forest green bold
+- Completion date
+- Certificate ID in monospace at the bottom
+- QR code linking to: `https://genaieducate.com/verify?id=GEE-2026-0001` (pre-fills the ID)
+- Signature line with "Saurav Chauhan, Founder — GenAIEducate" below it
+- Use `pdfkit` for PDF generation and `qrcode` npm package for QR codes (no external API calls)
+
+### Part 5: Setup instructions
+
+Create a `SETUP_CERTIFICATES.md` file with step-by-step instructions for Saurav to:
+1. Create a Google Cloud project
+2. Enable the Google Sheets API
+3. Create a Service Account and download the JSON key
+4. Share the Google Sheet with the service account email
+5. Add the environment variables locally and on Vercel
+
+### Summary of files to create/modify:
+- `app/verify/page.js` — public verification page
+- `app/api/verify-certificate/route.js` — API route (server-side only)
+- `scripts/generate-certificate.js` — local certificate PDF generator
+- `SETUP_CERTIFICATES.md` — step-by-step Google Sheets API setup
+- `.env.local.example` — template showing required environment variables (never commit actual values)
+- Footer in `app/page.js` — add "Verify a Certificate →" link pointing to /verify
+
+### Important rules for this feature:
+- NEVER expose Google Sheets credentials in client-side code. All API calls go through the Next.js API route (server-side only).
+- The QR code must use the `qrcode` npm package locally, never an external QR API.
+- Credentials must never be committed to GitHub. Add to .gitignore if not already there.
+
+---
+
 ## Important rules for code changes
 - Always use Tailwind CSS v3 classes, not inline styles
 - Mobile-responsive: must work well on phones (many visitors from LinkedIn/WhatsApp links on mobile)
@@ -296,5 +459,7 @@ Points:
 - Don't use carousel/slider components for testimonials (professionals see through those)
 - Don't name the previous edtech platform (Great Learning) explicitly, just say "a leading edtech platform"
 
-## WhatsApp number note
-The correct WhatsApp number is 919326392693. Verify this matches what's in the code. A previous version had 919326392963 (last four digits swapped), which would send inquiries to a wrong number. Fix this if it's still wrong.
+## WhatsApp number
+The correct WhatsApp number is 919326392693.
+This is the ONLY correct number. Do not change it, do not "fix" it, do not swap any digits.
+WhatsApp link must always be: `https://wa.me/919326392693?text=Hi%20Saurav%2C%20I%20just%20visited%20the%20GenAIEducate%20website.%20Could%20you%20tell%20me%20more%20about%20the%20next%20cohort%3F`
