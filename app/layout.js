@@ -12,9 +12,9 @@ const geistMono = Geist_Mono({
 });
 
 const siteUrl = "https://genaieducate.com";
-const title = "GenAIEducate | Applied GenAI Engineering Program";
+const title = "GenAIEducate | Institute for Generative AI";
 const description =
-  "A 4-month applied AI engineering program. 16 weekends, 4 deployed projects, taught by a single practitioner instructor.";
+  "Corporate AI training, the Applied GenAI Engineering Program, and AI workshops for teams and professionals building real AI systems.";
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
