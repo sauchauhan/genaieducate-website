@@ -46,7 +46,7 @@ function TypingDots() {
 
 function InterviewerFigure() {
   return (
-    <svg style={{ width: "clamp(70px, 8vw, 130px)", height: "clamp(110px, 12.6vw, 204px)" }} viewBox="0 0 70 110" fill="none">
+    <svg style={{ width: "clamp(52px, 8vw, 130px)", height: "clamp(82px, 12.6vw, 204px)" }} viewBox="0 0 70 110" fill="none">
       {/* Head */}
       <circle cx="35" cy="18" r="14" stroke="#1E5C4A" strokeWidth="2.5" strokeLinecap="round" />
       {/* Body */}
@@ -70,7 +70,7 @@ function InterviewerFigure() {
 
 function StrugglingFigure({ color }) {
   return (
-    <svg style={{ width: "clamp(70px, 8vw, 130px)", height: "clamp(110px, 12.6vw, 204px)" }} viewBox="0 0 70 110" fill="none">
+    <svg style={{ width: "clamp(52px, 8vw, 130px)", height: "clamp(82px, 12.6vw, 204px)" }} viewBox="0 0 70 110" fill="none">
       {/* Head */}
       <circle cx="35" cy="18" r="14" stroke={color} strokeWidth="2.5" strokeLinecap="round" />
       {/* Worried eyebrows */}
@@ -94,7 +94,7 @@ function StrugglingFigure({ color }) {
 
 function LeadershipFigure() {
   return (
-    <svg style={{ width: "clamp(70px, 8vw, 130px)", height: "clamp(110px, 12.6vw, 204px)" }} viewBox="0 0 70 110" fill="none">
+    <svg style={{ width: "clamp(52px, 8vw, 130px)", height: "clamp(82px, 12.6vw, 204px)" }} viewBox="0 0 70 110" fill="none">
       {/* Head */}
       <circle cx="35" cy="18" r="14" stroke="#1E5C4A" strokeWidth="2.5" strokeLinecap="round" />
       {/* Body */}
@@ -134,8 +134,8 @@ function QuestionBubble({ questions, currentIndex, currentText, showDots, side }
         background: "#1E5C4A",
         borderRadius: "clamp(14px, 1.5vw, 20px)",
         padding: "clamp(14px, 1.6vw, 22px) clamp(18px, 2vw, 28px)",
-        minWidth: "clamp(200px, 20vw, 320px)",
-        maxWidth: "clamp(240px, 24vw, 380px)",
+        minWidth: "clamp(130px, 20vw, 320px)",
+        maxWidth: "clamp(160px, 24vw, 380px)",
         position: "relative",
         boxShadow: "0 2px 12px rgba(30,92,74,0.15)",
         border: "1px solid rgba(255,248,240,0.08)",
@@ -214,7 +214,7 @@ function StruggleBubble({ intensity, buzzing }) {
         background: "#C94F1E",
         borderRadius: "clamp(14px, 1.5vw, 20px)",
         padding: "clamp(10px, 1.2vw, 16px) clamp(18px, 2vw, 26px)",
-        minWidth: "clamp(60px, 7vw, 100px)",
+        minWidth: "clamp(46px, 7vw, 100px)",
         textAlign: "center",
         position: "relative",
         boxShadow: buzzing ? "0 4px 16px rgba(201,79,30,0.35)" : "0 2px 12px rgba(201,79,30,0.2)",
@@ -256,7 +256,7 @@ function StruggleBubble({ intensity, buzzing }) {
 
 function Scene({ title, askerLabel, strugglerLabel, questions, AskerFigure, side, currentIndex, currentText, showDots, isStruggling }) {
   return (
-    <div style={{ flex: 1, padding: "clamp(36px, 4vw, 56px) clamp(28px, 3vw, 44px)", display: "flex", flexDirection: "column", alignItems: "center" }}>
+    <div style={{ flex: 1, padding: "clamp(24px, 4vw, 56px) clamp(14px, 3vw, 44px)", display: "flex", flexDirection: "column", alignItems: "center" }}>
       {/* Scene label */}
       <div
         style={{
@@ -274,7 +274,7 @@ function Scene({ title, askerLabel, strugglerLabel, questions, AskerFigure, side
       </div>
 
       {/* Characters */}
-      <div style={{ display: "flex", gap: "clamp(36px, 4vw, 64px)", alignItems: "flex-start", justifyContent: "center", width: "100%" }}>
+      <div style={{ display: "flex", gap: "clamp(16px, 4vw, 64px)", alignItems: "flex-start", justifyContent: "center", width: "100%" }}>
         {/* Asker */}
         <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
           <QuestionBubble
@@ -477,6 +477,18 @@ export default function HeroAnimation() {
         .collapsed-bar-scroll::-webkit-scrollbar {
           display: none;
         }
+        .hero-scene {
+          flex: 1;
+          transition: opacity 0.5s ease;
+        }
+        .hero-scene.is-active { opacity: 1; }
+        .hero-scene.is-inactive { opacity: 0.3; }
+        .hero-scene-divider { border-right: 1px solid rgba(42,42,42,0.06); }
+        @media (max-width: 767px) {
+          .hero-scene.is-inactive { display: none; }
+          .hero-scene.is-active { flex: 1 0 100%; width: 100%; }
+          .hero-scene-divider { border-right: none; }
+        }
       `}</style>
 
       <div
@@ -500,17 +512,12 @@ export default function HeroAnimation() {
               display: "flex",
               width: "100%",
               boxSizing: "border-box",
-              padding: "0 24px",
+              padding: "0 clamp(10px, 4vw, 24px)",
             }}
           >
             {/* Scene 1: Interview */}
             <div
-              style={{
-                flex: 1,
-                opacity: activeScene === 1 ? 1 : 0.3,
-                transition: "opacity 0.5s ease",
-                borderRight: "1px solid rgba(42,42,42,0.06)",
-              }}
+              className={`hero-scene hero-scene-divider ${activeScene === 1 ? "is-active" : "is-inactive"}`}
             >
               <Scene
                 title="The interview"
@@ -528,11 +535,7 @@ export default function HeroAnimation() {
 
             {/* Scene 2: Meeting */}
             <div
-              style={{
-                flex: 1,
-                opacity: activeScene === 2 ? 1 : 0.3,
-                transition: "opacity 0.5s ease",
-              }}
+              className={`hero-scene ${activeScene === 2 ? "is-active" : "is-inactive"}`}
             >
               <Scene
                 title="The meeting"
