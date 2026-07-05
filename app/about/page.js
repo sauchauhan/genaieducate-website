@@ -35,12 +35,11 @@ export default function About() {
       stats: ["15+ yrs industry experience", "200+ professionals trained", "4.85/5 rating"],
     },
     {
-      initials: "??",
-      name: "Partner name",
-      role: "Partner & Lead Instructor, AI for QA",
-      bio: "Full profile coming soon.",
-      stats: ["Profile in progress"],
-      placeholder: true,
+      initials: "PN",
+      name: "Prakash Narkhede",
+      role: "Partner & Principal QA Automation Architect",
+      bio: "Principal QA Automation Architect specializing in Agentic AI and Large Language Model integration for software testing. Highly experienced in designing advanced AI-native QA workflows and scaling enterprise-level automation frameworks.",
+      stats: ["Agentic AI & LLM Expert", "AI-Native QA Advocate", "Test Automation Educator"],
     },
   ];
 
