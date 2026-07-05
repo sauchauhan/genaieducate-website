@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<!--
+  GenAIEducate certificate template.
+  Placeholders (replaced by scripts/generate-certificate.js):
+    {{student_name}}   {{program_name}}   {{completion_date}}
+    {{cert_id}}        {{issue_date}}     {{logo_src}}        {{qr_code_src}}
+  logo_src / qr_code_src should be absolute file paths or data URIs, not
+  web URLs, so the template renders correctly offline.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GenAIEducate Certificate</title>
+<style>
+  :root {
+    --forest-dark: #0F3D2E;
+    --rust: #C94F1E;
+    --gold: #C9A227;
+    --gold-light: #E4C874;
+    --cream: #FFF8F0;
+    --white: #FFFFFF;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  @page { size: A4 landscape; margin: 0; }
+
+  html, body {
+    width: 297mm;
+    height: 210mm;
+  }
+
+  body {
+    background: #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Calibri', 'DM Sans', Arial, sans-serif;
+  }
+
+  @media print {
+    body { background: none; }
+    .certificate { box-shadow: none; }
+  }
+
+  .certificate {
+    position: relative;
+    width: 297mm;
+    height: 210mm;
+    background: var(--forest-dark);
+    overflow: hidden;
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.35);
+  }
+
+  /* Top / bottom gold bars, 3mm */
+  .bar-top, .bar-bottom {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 3mm;
+    background: var(--gold);
+    z-index: 3;
+  }
+  .bar-top { top: 0; }
+  .bar-bottom { bottom: 0; }
+
+  /* Left / right rust stripes, 3mm, between the gold bars */
+  .stripe-left, .stripe-right {
+    position: absolute;
+    top: 3mm;
+    width: 3mm;
+    height: calc(100% - 6mm);
+    background: var(--rust);
+    z-index: 3;
+  }
+  .stripe-left { left: 0; }
+  .stripe-right { right: 0; }
+
+  /* Gold inner border frame */
+  .inner-frame {
+    position: absolute;
+    top: 10mm;
+    left: 10mm;
+    right: 10mm;
+    bottom: 10mm;
+    border: 1.25pt solid var(--gold);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Corner decorations, behind content */
+  .corner {
+    position: absolute;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .corner-arcs-tl {
+    top: 15mm;
+    left: 15mm;
+    width: 62mm;
+    height: 62mm;
+  }
+  .corner-dots-bl {
+    bottom: 15mm;
+    left: 15mm;
+    width: 55mm;
+    height: 42mm;
+  }
+  .corner-diamonds-br {
+    bottom: 15mm;
+    right: 15mm;
+    width: 65mm;
+    height: 50mm;
+  }
+  .corner svg { width: 100%; height: 100%; display: block; }
+
+  /* Main content */
+  .content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 30mm 45mm;
+    text-align: center;
+  }
+
+  .logo-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--cream);
+    border-radius: 2px;
+    padding: 2.5mm 5mm;
+    margin-bottom: 5mm;
+    box-shadow: 0 1mm 2mm rgba(0, 0, 0, 0.25);
+  }
+
+  .logo {
+    width: 22mm;
+    height: auto;
+    display: block;
+  }
+
+  .brand-tagline {
+    font-family: Georgia, 'Lora', serif;
+    font-size: 9pt;
+    letter-spacing: 3px;
+    color: var(--cream);
+    text-transform: uppercase;
+    opacity: 0.85;
+    margin-bottom: 9mm;
+  }
+
+  .cert-label {
+    font-family: Georgia, 'Lora', serif;
+    font-size: 13pt;
+    font-weight: bold;
+    letter-spacing: 6px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 9mm;
+  }
+
+  .student-name-wrap {
+    margin-bottom: 7mm;
+  }
+
+  .student-name {
+    display: inline-block;
+    font-family: Georgia, 'Lora', serif;
+    font-size: 32pt;
+    font-weight: bold;
+    color: var(--white);
+    padding-bottom: 3mm;
+    border-bottom: 1.5pt solid var(--gold);
+  }
+
+  .completion-text {
+    font-size: 11pt;
+    color: var(--cream);
+    opacity: 0.9;
+    margin-bottom: 5mm;
+  }
+
+  .program-name {
+    font-family: Georgia, 'Lora', serif;
+    font-size: 18pt;
+    font-weight: bold;
+    color: var(--cream);
+    margin-bottom: 5mm;
+  }
+
+  .completion-date {
+    font-size: 10.5pt;
+    color: var(--cream);
+    opacity: 0.8;
+  }
+
+  /* Bottom three-column row */
+  .bottom-row {
+    position: absolute;
+    left: 24mm;
+    right: 24mm;
+    bottom: 17mm;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .sig-block, .id-block, .qr-block {
+    width: 70mm;
+  }
+
+  .sig-block { text-align: left; }
+  .id-block { text-align: center; }
+  .qr-block { text-align: right; }
+
+  .sig-line {
+    border-top: 1pt solid var(--cream);
+    width: 55mm;
+    margin-bottom: 2.5mm;
+  }
+
+  .sig-name {
+    font-family: Georgia, serif;
+    font-size: 10pt;
+    font-weight: bold;
+    color: var(--white);
+  }
+
+  .sig-title {
+    font-size: 8.5pt;
+    color: var(--cream);
+    opacity: 0.75;
+    margin-top: 0.5mm;
+  }
+
+  .cert-id-label {
+    font-size: 7.5pt;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cream);
+    opacity: 0.7;
+    margin-bottom: 1.5mm;
+  }
+
+  .cert-id {
+    font-family: Consolas, 'Courier New', monospace;
+    font-size: 12pt;
+    letter-spacing: 1px;
+    color: var(--gold-light);
+  }
+
+  .issue-date {
+    font-size: 7.5pt;
+    color: var(--cream);
+    opacity: 0.6;
+    margin-top: 2mm;
+  }
+
+  .qr-code {
+    width: 22mm;
+    height: 22mm;
+    background: var(--white);
+    padding: 1.5mm;
+  }
+
+  .qr-caption {
+    font-size: 7.5pt;
+    color: var(--cream);
+    opacity: 0.7;
+    margin-top: 1.5mm;
+  }
+</style>
+</head>
+<body>
+  <div class="certificate">
+    <div class="bar-top"></div>
+    <div class="bar-bottom"></div>
+    <div class="stripe-left"></div>
+    <div class="stripe-right"></div>
+    <div class="inner-frame"></div>
+
+    <div class="corner corner-arcs-tl">
+      <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="0" cy="0" r="200" fill="none" stroke="#C9A227" stroke-width="1.2" opacity="0.25"/>
+        <circle cx="0" cy="0" r="160" fill="none" stroke="#C9A227" stroke-width="1.2" opacity="0.35"/>
+        <circle cx="0" cy="0" r="120" fill="none" stroke="#C9A227" stroke-width="1.2" opacity="0.45"/>
+        <circle cx="0" cy="0" r="80"  fill="none" stroke="#C9A227" stroke-width="1.2" opacity="0.55"/>
+        <circle cx="0" cy="0" r="40"  fill="none" stroke="#C9A227" stroke-width="1.4" opacity="0.7"/>
+      </svg>
+    </div>
+
+    <div class="corner corner-dots-bl">
+      <svg viewBox="0 0 220 170" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="dotPattern" width="14" height="14" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="1.6" fill="#C9A227"/>
+          </pattern>
+        </defs>
+        <rect x="0" y="0" width="220" height="170" fill="url(#dotPattern)" opacity="0.4"/>
+      </svg>
+    </div>
+
+    <div class="corner corner-diamonds-br">
+      <svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="diamondPattern" width="30" height="30" patternUnits="userSpaceOnUse">
+            <rect x="10" y="10" width="14" height="14" fill="none" stroke="#C9A227" stroke-width="1" transform="rotate(45 17 17)"/>
+          </pattern>
+        </defs>
+        <rect x="0" y="0" width="260" height="200" fill="url(#diamondPattern)" opacity="0.4"/>
+      </svg>
+    </div>
+
+    <div class="content">
+      <div class="logo-badge">
+        <img class="logo" src="{{logo_src}}" alt="GenAIEducate">
+      </div>
+      <div class="brand-tagline">Institute for Generative AI</div>
+      <div class="cert-label">Certificate of Completion</div>
+      <div class="student-name-wrap">
+        <span class="student-name">{{student_name}}</span>
+      </div>
+      <div class="completion-text">has successfully completed the</div>
+      <div class="program-name">{{program_name}}</div>
+      <div class="completion-date">Completed: {{completion_date}}</div>
+    </div>
+
+    <div class="bottom-row">
+      <div class="sig-block">
+        <div class="sig-line"></div>
+        <div class="sig-name">Saurav Chauhan, Founder</div>
+        <div class="sig-title">GenAIEducate</div>
+      </div>
+      <div class="id-block">
+        <div class="cert-id-label">Certificate ID</div>
+        <div class="cert-id">{{cert_id}}</div>
+        <div class="issue-date">Issued: {{issue_date}}</div>
+      </div>
+      <div class="qr-block">
+        <img class="qr-code" src="{{qr_code_src}}" alt="Verify QR">
+        <div class="qr-caption">Scan to verify</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

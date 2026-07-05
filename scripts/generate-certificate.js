@@ -1,4 +1,8 @@
 // Local certificate PDF generator for GenAIEducate.
+// Fills scripts/certificate-template.html with the student's details and
+// renders it to PDF using the system's installed Edge/Chrome in headless
+// mode (no puppeteer/playwright dependency needed).
+//
 // Usage:
 //   node scripts/generate-certificate.js --id GEE-2026-0001 --name "Rahul Sharma" --date "June 2026" --program "Applied GenAI Engineering Program"
 //
@@ -6,19 +10,21 @@
 
 const fs = require('fs');
 const path = require('path');
-const PDFDocument = require('pdfkit');
+const os = require('os');
+const { execFile } = require('child_process');
 const QRCode = require('qrcode');
-
-const COLORS = {
-  forest: '#1E5C4A',
-  rust: '#C94F1E',
-  dark: '#2A2A2A',
-  cream: '#FFF8F0',
-  gold: '#C9A227',
-};
 
 const VERIFY_BASE_URL = 'https://genaieducate.com/verify';
 const DEFAULT_PROGRAM = 'Applied GenAI Engineering Program';
+const TEMPLATE_PATH = path.join(__dirname, 'certificate-template.html');
+const LOGO_PATH = path.join(__dirname, '..', 'public', 'logo.png');
+
+const BROWSER_CANDIDATES = [
+  'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
+  'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
+  'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+  'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+];
 
 function parseArgs(argv) {
   const args = {};
@@ -34,6 +40,28 @@ function parseArgs(argv) {
   return args;
 }
 
+function findBrowser() {
+  const found = BROWSER_CANDIDATES.find((candidate) => fs.existsSync(candidate));
+  if (!found) {
+    throw new Error(
+      'Could not find Edge or Chrome. Install one, or edit BROWSER_CANDIDATES in this script with the correct path.'
+    );
+  }
+  return found;
+}
+
+function toDataUri(filePath, mimeType) {
+  const buffer = fs.readFileSync(filePath);
+  return `data:${mimeType};base64,${buffer.toString('base64')}`;
+}
+
+function fillTemplate(template, values) {
+  return Object.entries(values).reduce(
+    (html, [key, value]) => html.split(`{{${key}}}`).join(value),
+    template
+  );
+}
+
 async function generateCertificate({ id, name, date, program }) {
   const outputDir = path.join(__dirname, '..', 'certificates');
   if (!fs.existsSync(outputDir)) {
@@ -42,97 +70,47 @@ async function generateCertificate({ id, name, date, program }) {
   const outputPath = path.join(outputDir, `${id}.pdf`);
 
   const verifyUrl = `${VERIFY_BASE_URL}?id=${encodeURIComponent(id)}`;
-  const qrDataUrl = await QRCode.toDataURL(verifyUrl, { margin: 1, width: 300 });
-  const qrImage = Buffer.from(qrDataUrl.split(',')[1], 'base64');
+  const qrDataUri = await QRCode.toDataURL(verifyUrl, { margin: 1, width: 300 });
+  const logoDataUri = toDataUri(LOGO_PATH, 'image/png');
 
-  const doc = new PDFDocument({ size: 'A4', layout: 'landscape', margin: 0 });
-  doc.pipe(fs.createWriteStream(outputPath));
+  const template = fs.readFileSync(TEMPLATE_PATH, 'utf8');
+  const issueDate = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  const filledHtml = fillTemplate(template, {
+    student_name: name,
+    program_name: program,
+    completion_date: date,
+    cert_id: id,
+    issue_date: issueDate,
+    logo_src: logoDataUri,
+    qr_code_src: qrDataUri,
+  });
 
-  const pageWidth = doc.page.width;
-  const pageHeight = doc.page.height;
+  const tmpHtmlPath = path.join(os.tmpdir(), `genaieducate-cert-${id}-${Date.now()}.html`);
+  fs.writeFileSync(tmpHtmlPath, filledHtml, 'utf8');
 
-  // Top forest bar with gold accent line
-  doc.rect(0, 0, pageWidth, 24).fill(COLORS.forest);
-  doc.rect(0, 24, pageWidth, 3).fill(COLORS.gold);
+  const browserPath = findBrowser();
 
-  // Bottom forest bar with gold accent line
-  doc.rect(0, pageHeight - 27, pageWidth, 3).fill(COLORS.gold);
-  doc.rect(0, pageHeight - 24, pageWidth, 24).fill(COLORS.forest);
-
-  // Rust side accent stripes
-  doc.rect(0, 27, 10, pageHeight - 54).fill(COLORS.rust);
-  doc.rect(pageWidth - 10, 27, 10, pageHeight - 54).fill(COLORS.rust);
-
-  // Heading: GenAI (forest) + Educate (rust)
-  const headingY = 70;
-  doc.font('Helvetica-Bold').fontSize(36).fillColor(COLORS.forest);
-  const genaiWidth = doc.widthOfString('GenAI');
-  doc.font('Helvetica-Bold').fontSize(36).fillColor(COLORS.rust);
-  const educateWidth = doc.widthOfString('Educate');
-  const totalWidth = genaiWidth + educateWidth;
-  const startX = (pageWidth - totalWidth) / 2;
-
-  doc.fillColor(COLORS.forest).text('GenAI', startX, headingY, { continued: false, lineBreak: false });
-  doc.fillColor(COLORS.rust).text('Educate', startX + genaiWidth, headingY, { continued: false, lineBreak: false });
-
-  doc.font('Helvetica').fontSize(11).fillColor(COLORS.dark)
-    .text('INSTITUTE FOR GENERATIVE AI', 0, headingY + 44, { align: 'center', characterSpacing: 2 });
-
-  // Certificate of completion label
-  doc.font('Helvetica-Bold').fontSize(14).fillColor(COLORS.dark)
-    .text('CERTIFICATE OF COMPLETION', 0, headingY + 78, { align: 'center', characterSpacing: 4 });
-
-  // Divider line
-  const dividerY = headingY + 108;
-  const dividerWidth = 120;
-  doc.moveTo((pageWidth - dividerWidth) / 2, dividerY)
-    .lineTo((pageWidth + dividerWidth) / 2, dividerY)
-    .lineWidth(1.5)
-    .strokeColor(COLORS.gold)
-    .stroke();
-
-  // Student name (hero element)
-  doc.font('Times-Bold').fontSize(40).fillColor(COLORS.dark)
-    .text(name, 0, dividerY + 28, { align: 'center' });
-
-  // "has successfully completed the"
-  doc.font('Helvetica').fontSize(13).fillColor(COLORS.dark)
-    .text('has successfully completed the', 0, dividerY + 82, { align: 'center' });
-
-  // Program name
-  doc.font('Helvetica-Bold').fontSize(20).fillColor(COLORS.forest)
-    .text(program, 0, dividerY + 104, { align: 'center' });
-
-  // Completion date
-  doc.font('Helvetica').fontSize(12).fillColor(COLORS.dark)
-    .text(`Completed: ${date}`, 0, dividerY + 138, { align: 'center' });
-
-  // Bottom row: signature (left) + QR code (right)
-  const bottomRowY = pageHeight - 130;
-
-  const sigX = 90;
-  doc.moveTo(sigX, bottomRowY + 40)
-    .lineTo(sigX + 200, bottomRowY + 40)
-    .lineWidth(1)
-    .strokeColor(COLORS.dark)
-    .stroke();
-  doc.font('Helvetica-Bold').fontSize(11).fillColor(COLORS.dark)
-    .text('Saurav Chauhan, Founder', sigX, bottomRowY + 46, { width: 200, align: 'center' });
-  doc.font('Helvetica').fontSize(10).fillColor(COLORS.dark)
-    .text('GenAIEducate', sigX, bottomRowY + 60, { width: 200, align: 'center' });
-
-  // Certificate ID, monospace, bottom center
-  doc.font('Courier').fontSize(11).fillColor(COLORS.dark)
-    .text(id, 0, bottomRowY + 95, { align: 'center' });
-
-  // QR code, bottom right
-  const qrSize = 80;
-  const qrX = pageWidth - 90 - qrSize;
-  doc.image(qrImage, qrX, bottomRowY, { width: qrSize, height: qrSize });
-  doc.font('Helvetica').fontSize(8).fillColor(COLORS.dark)
-    .text('Scan to verify', qrX, bottomRowY + qrSize + 4, { width: qrSize, align: 'center' });
-
-  doc.end();
+  try {
+    await new Promise((resolve, reject) => {
+      execFile(
+        browserPath,
+        [
+          '--headless',
+          '--disable-gpu',
+          '--no-sandbox',
+          `--print-to-pdf=${outputPath}`,
+          '--no-pdf-header-footer',
+          `file:///${tmpHtmlPath.replace(/\\/g, '/')}`,
+        ],
+        (error) => {
+          if (error) reject(error);
+          else resolve();
+        }
+      );
+    });
+  } finally {
+    fs.unlinkSync(tmpHtmlPath);
+  }
 
   return outputPath;
 }
