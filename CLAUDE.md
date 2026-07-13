@@ -463,3 +463,154 @@ Create a `SETUP_CERTIFICATES.md` file with step-by-step instructions for Saurav 
 The correct WhatsApp number is 919326392693.
 This is the ONLY correct number. Do not change it, do not "fix" it, do not swap any digits.
 WhatsApp link must always be: `https://wa.me/919326392693?text=Hi%20Saurav%2C%20I%20just%20visited%20the%20GenAIEducate%20website.%20Could%20you%20tell%20me%20more%20about%20the%20next%20cohort%3F`
+
+---
+
+## The GenAI Brief (weekly AI news feature) — BUILD THIS
+
+### Overview
+A weekly AI news digest published at `genaieducate.com/this-week-in-ai`. Positions GenAIEducate as an active, credible voice tracking the AI field. Each week is a densely-formatted, branded "intelligence briefing" that is easy to produce (Level 2 automation: auto-fetch + human review).
+
+### Brand name
+The feature is called **"The GenAI Brief"** (not "This Week in AI", which is just the URL/descriptor).
+
+### Design language: dense dashboard, light and readable
+
+CRITICAL readability rule: the body/reading area must be LIGHT (warm paper `#FDFBF7`) with dark text. Branding comes from structural anchors, NOT from a dark reading background. A fully dark page with gray text (like generic AI briefings) is exactly what to avoid — it strains the eyes.
+
+**Structural anchors (where branding lives):**
+- Header block: forest green (`#1E5C4A`) background, cream text, 3px gold bottom border
+- Section labels: forest green text with a small rust square marker and a thin trailing line
+- Table headers: forest green row with cream text
+- "Why it matters" boxes: soft gold background (`#F5EAD0`) with gold left border
+- CTA and footer tag: forest green
+- Two-column panels: cream (`#FFF8F0`) background, forest or rust left border accent
+
+**Reading content (always high contrast):**
+- Page background: warm paper `#FDFBF7`
+- Body text: near-black `#1A1A1A` or `#444`
+- Table body rows: light, alternating cream/white, dark text
+- Color-coding for scannability: company names in distinct colors, price/data highs in red (`#B91C1C`), lows in green (`#15803D`)
+
+**Typography:**
+- Headings: Lora (serif) — `font-serif`
+- Body: IBM Plex Sans — `font-sans`
+- Data, tables, labels, meta: IBM Plex Mono — `font-mono`
+
+**Icons:** monochrome Unicode symbols only (◆ → ▪ ● ▦ ■), no icon library.
+
+A reference sample of the exact approved design is described above. Match its structure: header, two-panel grid (What Happened / Why You Should Care), optional comparison table, "why it matters" box, "by the numbers" stat grid, CTA, footer.
+
+### Modular block system
+
+Not every week has the same content. Build these as reusable blocks; the generator assembles whichever fit each week's news:
+
+1. **Header block** (always) — "The GenAI Brief", date range, issue number
+2. **Two-panel grid** (always) — "What Happened" + "Why You Should Care", bullet lists
+3. **Comparison table** (optional) — when there's data to compare (pricing, benchmarks, specs). Must not render if no tabular data that week; layout must not look empty without it.
+4. **News cards** (optional) — 3-4 compact cards for weeks with scattered, non-tabular news
+5. **Why it matters** (always) — one opinionated editorial takeaway paragraph
+6. **By the numbers** (optional) — 3-4 stat grid
+7. **CTA block** (always) — drives to the Applied GenAI Program
+8. **Footer** (always) — sources, issue tag
+
+### Automation level: Level 2 (fetch + curate + human review)
+
+The generator runs on Saurav's laptop (localhost), produces the page, Saurav reviews it, then pushes to GitHub to publish. Never auto-publishes.
+
+### Weekly workflow
+
+**Lazy week (zero curation):**
+```
+node scripts/generate-brief.js
+```
+Auto-fetches top AI news via NewsAPI, summarizes each via OpenAI, assembles blocks, outputs the page. Saurav reviews, pushes.
+
+**Curated week (Saurav has picks):**
+Saurav edits `this-week.json` with hand-picked items (title + link, or title + own note). Running the script uses these instead of auto-fetching.
+
+**Hybrid week:**
+Saurav adds a few picks to `this-week.json` and the script auto-fetches the rest to fill.
+
+### this-week.json format
+```json
+{
+  "dateRange": "July 07 — July 13, 2026",
+  "issueNumber": 1,
+  "autoFetchCount": 3,
+  "items": [
+    {
+      "title": "Optional hand-picked headline",
+      "url": "https://source.com/article",
+      "note": "Optional: Saurav's own angle, or leave blank for AI to summarize",
+      "category": "PRODUCT"
+    }
+  ]
+}
+```
+If `items` is empty, fully auto-fetch. If `items` has entries, use them and auto-fetch `autoFetchCount` more.
+
+### News source: NewsAPI (free tier)
+- Free "Developer" tier works on localhost only, 24h article delay — FINE because the script runs on Saurav's laptop, not the server
+- Build the news source as a SWAPPABLE module (`lib/news-sources/newsapi.js`) so it can later be replaced with RSS feeds (for automated server-side runs) without rebuilding the generator
+- NewsAPI key goes in `.env.local` as `NEWSAPI_KEY`
+
+### Summarization: OpenAI (gpt-4o-mini)
+- Uses `OPENAI_API_KEY` already in `.env.local`
+- Model: `gpt-4o-mini` (cheap, sufficient)
+- Writes: a punchy headline, 2-4 bullets, and the "why it matters" take, all in GenAIEducate's brand voice (specific, opinionated for builders, no marketing fluff, no em dashes)
+- COST GUARDRAIL (mandatory): cap at max 10 news items per run, cap max_tokens per call (e.g. 400), so a bug can never burn credits. Each weekly run should cost well under ₹5. Log estimated cost after each run.
+
+### Output 1: Web page
+- Latest brief always at `/this-week-in-ai` (memorable, always current)
+- Dated permanent archive at `/this-week-in-ai/YYYY-MM-DD`
+- Browsable index at `/this-week-in-ai/archive` listing all past briefs (date, issue number, headline teaser)
+- Full detailed version with all blocks
+- Add "The GenAI Brief" link to the main site nav (or footer)
+
+### Output 2: LinkedIn image (portrait one-pager)
+- Portrait format 1080x1350
+- A TEASER, not the full content: header + top 3 highlights + "Full breakdown at genaieducate.com/this-week-in-ai"
+- Drives traffic to the site
+- Generated from the same data as the web page (single source of truth)
+- Use Puppeteer to render an HTML template to PNG at 1080x1350
+- Output to `/briefs-output/YYYY-MM-DD-linkedin.png` (gitignored, Saurav uploads manually to LinkedIn)
+
+### Files to create
+- `scripts/generate-brief.js` — main generator (fetch → summarize → assemble → output web page + LinkedIn image)
+- `lib/news-sources/newsapi.js` — swappable NewsAPI fetcher module
+- `lib/brief-summarizer.js` — OpenAI summarization with cost guardrail
+- `lib/brief-template.js` — the HTML/JSX block assembly (matches approved design)
+- `app/this-week-in-ai/page.js` — latest brief (reads most recent generated brief)
+- `app/this-week-in-ai/[date]/page.js` — dated archive pages
+- `app/this-week-in-ai/archive/page.js` — browsable index
+- `this-week.json` — Saurav's weekly curation file (committed, so it's version controlled)
+- `briefs-data/YYYY-MM-DD.json` — generated brief data per week (committed, this IS the archive)
+- `SETUP_BRIEF.md` — how to get a NewsAPI key, how to run the weekly workflow
+- `.env.local.example` — add `NEWSAPI_KEY=` and confirm `OPENAI_API_KEY=` present
+- `.gitignore` — exclude `/briefs-output/` (the generated PNG images)
+
+### Design tokens for the brief (match approved sample)
+```
+--cream: #FFF8F0; --paper: #FDFBF7; --forest: #1E5C4A; --forest-dark: #164438;
+--rust: #C94F1E; --gold: #B8860B; --gold-soft: #F5EAD0;
+--ink: #1A1A1A; --ink-soft: #444; --muted: #6B6B6B; --line: #E4DED3;
+Company colors: Anthropic #7C3AED, OpenAI #0F766E, Google #B45309, xAI #15803D, Meta #C2410C
+Price high #B91C1C, price low #15803D
+```
+
+### Editorial voice for the brief
+- Opinionated and useful, written for builders and engineering leaders
+- Every item ends with a concrete "so what" for someone building or deciding
+- Specific, never vague. Real numbers, real tradeoffs.
+- No hype, no "game-changer", no "revolutionary", no em dashes
+- The "why it matters" is the most valuable part — it's interpretation, not reporting
+- Saurav reviews every take before publishing (Level 2)
+
+### Rules
+- Generator runs locally only, never auto-publishes
+- OpenAI cost guardrail is mandatory
+- News source must be swappable (NewsAPI now, RSS later)
+- LinkedIn image is a teaser that drives to the web page, never the full content
+- Do not commit generated PNG images (gitignore /briefs-output/)
+- Do commit the brief data JSON (briefs-data/) — that's the archive
