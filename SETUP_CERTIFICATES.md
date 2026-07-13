@@ -45,8 +45,13 @@ From that JSON file you need two values:
 
 1. Open the Google Sheet from step 1.
 2. Click **Share**.
-3. Paste the service account's `client_email` and give it **Viewer** access.
+3. Paste the service account's `client_email` and give it **Editor** access.
 4. Uncheck "Notify people" and send.
+
+Editor access (not just Viewer) is required because `scripts/generate-certificate.js` appends
+a row automatically when it issues a certificate. The public `/verify` page's API route only
+ever requests read-only scope, so it can never write even though the underlying service
+account has edit rights on the sheet.
 
 ## 6. Add environment variables locally
 
@@ -66,9 +71,16 @@ From that JSON file you need two values:
 
 ## Issuing a new certificate
 
-1. Add a row to the Google Sheet with the student's details and a new sequential `GEE-YYYY-XXXX` ID.
-2. Generate the PDF locally:
+1. Generate the PDF locally:
    ```
-   node scripts/generate-certificate.js --id GEE-2026-0001 --name "Rahul Sharma" --date "June 2026"
+   node scripts/generate-certificate.js --name "Rahul Sharma" --date "June 2026"
    ```
-3. The PDF is written to `certificates/GEE-2026-0001.pdf`. Send it to the student.
+2. The script auto-generates a random certificate ID (e.g. `GEE-2026-7K3F9Q`), writes the PDF to
+   `certificates/<id>.pdf`, and — since credentials are configured — appends the matching row to
+   the Google Sheet for you. Watch the console output for confirmation.
+3. If the Sheet couldn't be reached (network issue, permissions not yet updated, etc.), the
+   script prints the row instead so you can add it by hand.
+4. Send the PDF to the student.
+
+To pin a specific ID instead of a random one (e.g. to match an already-issued certificate),
+pass `--id GEE-2026-0001` explicitly.

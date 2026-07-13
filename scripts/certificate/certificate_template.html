@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+@page { size: 1400px 990px; margin: 0; }
+
+body {
+  width: 1400px;
+  height: 990px;
+  background: #ffffff;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+.certificate {
+  width: 1400px;
+  height: 990px;
+  position: relative;
+  background: #FCFCFA;
+}
+
+/* ---- Dark green circuit-board corner wedges (BRAND, fixed) ---- */
+.corner-wedge {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+  z-index: 1;
+}
+.corner-wedge.tl { top: 0; left: 0; }
+.corner-wedge.br { bottom: 0; right: 0; transform: rotate(180deg); }
+
+.wedge-fill {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  top: 0; left: 0;
+  background: linear-gradient(135deg, #12352C 0%, #1A4A3C 55%, #0F2E26 100%);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+/* ---- Gold border frame (BRAND, fixed) ---- */
+.outer-border {
+  position: absolute;
+  inset: 14px;
+  border: 3px solid #C9A84C;
+  z-index: 3;
+  pointer-events: none;
+}
+.inner-border {
+  position: absolute;
+  inset: 24px;
+  border: 1px solid #C9A84C;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.dot-texture {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  width: 180px;
+  height: 120px;
+  background-image: radial-gradient(#C9A84C 1.3px, transparent 1.3px);
+  background-size: 12px 12px;
+  opacity: 0.35;
+  z-index: 2;
+}
+
+.content {
+  position: absolute;
+  inset: 44px 70px 92px 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 4;
+}
+
+.logo-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.logo-row img {
+  height: 78px;
+  object-fit: contain;
+}
+
+.divider-diamond {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 4px 0 12px;
+}
+.divider-diamond .line { width: 90px; height: 1px; background: #C9A84C; }
+.divider-diamond .diamond { width: 9px; height: 9px; background: #C9A84C; transform: rotate(45deg); }
+
+.cert-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: 12px;
+  color: #1A2E28;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.presented-to {
+  font-size: 15px;
+  font-weight: 300;
+  color: #7A8580;
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+}
+
+.student-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 72px;
+  font-weight: 800;
+  color: #1E5C4A;
+  letter-spacing: 4px;
+  margin-bottom: 8px;
+  text-align: center;
+  line-height: 1.05;
+}
+
+.name-underline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.name-underline .nu-line { width: 200px; height: 1.5px; background: linear-gradient(90deg, transparent, #C9A84C); }
+.name-underline .nu-line.right { background: linear-gradient(90deg, #C9A84C, transparent); }
+.name-underline .nu-diamond { width: 7px; height: 7px; background: #C9A84C; transform: rotate(45deg); }
+
+.completion-text {
+  font-size: 15px;
+  font-weight: 300;
+  color: #7A8580;
+  margin-bottom: 8px;
+}
+
+.program-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 40px;
+  font-weight: 700;
+  color: #1A2E28;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.cert-type {
+  display: inline-block;
+  padding: 7px 30px;
+  background: #1E5C4A;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: #E8D9A8;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+}
+
+.highlights-section { width: 100%; max-width: 900px; margin-bottom: 24px; }
+
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: #B8912F;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.section-label .sl-line { width: 60px; height: 1px; background: #C9A84C; }
+.section-label .sl-diamond { width: 6px; height: 6px; background: #C9A84C; transform: rotate(45deg); }
+
+.highlights-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+.highlight-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 10px;
+  background: linear-gradient(160deg, #F4F9F7 0%, #EBF3EF 100%);
+  border: 1px solid #D4E4DD;
+  border-radius: 10px;
+  text-align: center;
+}
+.highlight-card .hl-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #1E5C4A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  color: white;
+}
+.highlight-card .hl-text { font-size: 12px; font-weight: 600; color: #1A2E28; line-height: 1.35; }
+
+.skills-section { width: 100%; max-width: 900px; }
+.skills-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.skill-tag {
+  padding: 5px 16px;
+  background: #FBF8EF;
+  border: 1px solid #D9BF6E;
+  border-radius: 4px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #1E5C4A;
+  letter-spacing: 0.5px;
+}
+
+.bottom-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1140px;
+  margin-top: auto;
+}
+
+.meta-block { display: flex; gap: 26px; }
+.meta-item { display: flex; flex-direction: column; }
+.meta-item.with-divider { padding-left: 26px; border-left: 1px solid #DDD; }
+.meta-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: #A0A8A4;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.meta-value { font-size: 14px; font-weight: 600; color: #2A2A2A; }
+
+.authority-block { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.seal-circle {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 2.5px solid #C9A84C;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  background: radial-gradient(circle, #F9F6EC 0%, #F0EAD6 100%);
+  position: relative;
+}
+.seal-circle::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 1px solid #1E5C4A;
+}
+.seal-inner {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1E5C4A;
+  letter-spacing: 1px;
+}
+.authority-name { font-size: 13px; font-weight: 600; color: #2A2A2A; }
+.authority-title { font-size: 10px; font-weight: 400; color: #7A8580; line-height: 1.4; }
+
+.qr-block { display: flex; flex-direction: column; align-items: center; width: 130px; }
+.qr-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: #A0A8A4;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.qr-frame {
+  width: 76px;
+  height: 76px;
+  border: 2px solid #C9A84C;
+  border-radius: 6px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  margin-bottom: 5px;
+}
+.qr-frame img, .qr-frame svg { width: 100%; height: 100%; }
+.qr-url {
+  font-size: 9.5px;
+  font-weight: 600;
+  color: #1E5C4A;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.qr-sub { font-size: 8px; color: #A0A8A4; }
+
+.footer-bar {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 46px;
+  background: linear-gradient(90deg, #12352C, #1E5C4A, #12352C);
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: #E8D9A8;
+  text-transform: uppercase;
+  white-space: nowrap;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.footer-bar .fb-star { color: #C9A84C; font-size: 11px; }
+</style>
+</head>
+<body>
+<div class="certificate">
+
+  <div class="corner-wedge tl">
+    <div class="wedge-fill"></div>
+    <svg width="300" height="300" style="position:absolute;top:0;left:0;" viewBox="0 0 300 300" fill="none">
+      <g stroke="#3FA88A" stroke-width="1.5" opacity="0.55" fill="none">
+        <path d="M20 55 L120 55 L120 90"/><circle cx="120" cy="90" r="3.5" fill="#3FA88A"/>
+        <path d="M20 95 L80 95 L80 140"/><circle cx="80" cy="140" r="3.5" fill="#3FA88A"/>
+        <path d="M55 20 L55 100 L90 100"/><circle cx="90" cy="100" r="3.5" fill="#3FA88A"/>
+        <path d="M95 20 L95 60 L150 60"/><circle cx="150" cy="60" r="3.5" fill="#3FA88A"/>
+        <path d="M30 130 L60 130 L60 170"/><circle cx="60" cy="170" r="3" fill="#3FA88A"/>
+        <path d="M130 30 L130 45 L175 45"/><circle cx="175" cy="45" r="3" fill="#3FA88A"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="corner-wedge br">
+    <div class="wedge-fill"></div>
+    <svg width="300" height="300" style="position:absolute;top:0;left:0;" viewBox="0 0 300 300" fill="none">
+      <g stroke="#3FA88A" stroke-width="1.5" opacity="0.55" fill="none">
+        <path d="M20 55 L120 55 L120 90"/><circle cx="120" cy="90" r="3.5" fill="#3FA88A"/>
+        <path d="M20 95 L80 95 L80 140"/><circle cx="80" cy="140" r="3.5" fill="#3FA88A"/>
+        <path d="M55 20 L55 100 L90 100"/><circle cx="90" cy="100" r="3.5" fill="#3FA88A"/>
+        <path d="M95 20 L95 60 L150 60"/><circle cx="150" cy="60" r="3.5" fill="#3FA88A"/>
+        <path d="M30 130 L60 130 L60 170"/><circle cx="60" cy="170" r="3" fill="#3FA88A"/>
+        <path d="M130 30 L130 45 L175 45"/><circle cx="175" cy="45" r="3" fill="#3FA88A"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="dot-texture"></div>
+  <div class="outer-border"></div>
+  <div class="inner-border"></div>
+
+  <div class="content">
+    <div class="logo-row">
+      <img src="{{logoSrc}}" alt="{{instituteName}}">
+    </div>
+
+    <div class="divider-diamond">
+      <div class="line"></div><div class="diamond"></div><div class="line"></div>
+    </div>
+
+    <div class="cert-title">Certificate of Completion</div>
+    <div class="presented-to">This certificate is proudly presented to</div>
+    <div class="student-name">{{studentName}}</div>
+
+    <div class="name-underline">
+      <div class="nu-line"></div><div class="nu-diamond"></div><div class="nu-line right"></div>
+    </div>
+
+    <div class="completion-text">for successfully completing the</div>
+    <div class="program-name">{{programName}}</div>
+    <div class="cert-type">{{certificateType}}</div>
+
+    <div class="highlights-section">
+      <div class="section-label">
+        <div class="sl-line"></div><div class="sl-diamond"></div>
+        Program Highlights
+        <div class="sl-diamond"></div><div class="sl-line"></div>
+      </div>
+      <div class="highlights-grid">
+        {{highlightCards}}
+      </div>
+    </div>
+
+    <div class="skills-section">
+      <div class="section-label">
+        <div class="sl-line"></div><div class="sl-diamond"></div>
+        Skills Validated
+        <div class="sl-diamond"></div><div class="sl-line"></div>
+      </div>
+      <div class="skills-row">
+        {{skillTags}}
+      </div>
+    </div>
+
+    <div class="bottom-row">
+      <div class="meta-block">
+        <div class="meta-item">
+          <div class="meta-label">Certificate ID</div>
+          <div class="meta-value">{{certificateId}}</div>
+        </div>
+        <div class="meta-item with-divider">
+          <div class="meta-label">Issued On</div>
+          <div class="meta-value">{{issuedOn}}</div>
+        </div>
+        <div class="meta-item with-divider">
+          <div class="meta-label">Completed On</div>
+          <div class="meta-value">{{completedOn}}</div>
+        </div>
+      </div>
+
+      <div class="authority-block">
+        <div class="seal-circle"><div class="seal-inner">{{sealText}}</div></div>
+        <div class="authority-name">{{authorityTitle}}</div>
+        <div class="authority-title">{{instituteName}}</div>
+      </div>
+
+      <div class="qr-block">
+        <div class="qr-label">Verify Certificate</div>
+        <div class="qr-frame">{{qrCode}}</div>
+        <div class="qr-url">{{verifyUrlShort}}</div>
+        <div class="qr-sub">Scan to verify authenticity</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <span class="fb-star">&#9733;</span>
+    {{footerText}}
+    <span class="fb-star">&#9733;</span>
+  </div>
+
+</div>
+</body>
+</html>

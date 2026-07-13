@@ -1,23 +1,34 @@
 // Local certificate PDF generator for GenAIEducate.
-// Fills scripts/certificate-template.html with the student's details and
-// renders it to PDF using the system's installed Edge/Chrome in headless
-// mode (no puppeteer/playwright dependency needed).
+// Fills scripts/certificate/certificate_template.html (via renderCertificateHTML)
+// with the student's details and renders it to PDF using the system's
+// installed Edge/Chrome in headless mode (no puppeteer/playwright dependency needed).
 //
 // Usage:
-//   node scripts/generate-certificate.js --id GEE-2026-0001 --name "Rahul Sharma" --date "June 2026" --program "Applied GenAI Engineering Program"
+//   node scripts/generate-certificate.js --name "Rahul Sharma" --date "June 2026" [--course appliedGenAI] [--id GEE-2026-XXXXXX]
 //
-// Add the row to the Google Sheet yourself; this script only produces the PDF.
+// The certificate ID is auto-generated (random, non-sequential) unless you pass
+// --id explicitly. If Google Sheets credentials are present in .env.local, the
+// row is appended to the sheet automatically; otherwise it's printed for you
+// to add by hand. Google Sheet columns: certificate_id, student_name,
+// program_name, completion_date, issue_date, status
 
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const crypto = require('crypto');
 const { execFile } = require('child_process');
 const QRCode = require('qrcode');
+const { renderCertificateHTML } = require('./certificate/certificate');
+const { COURSES } = require('./certificate/courses');
 
 const VERIFY_BASE_URL = 'https://genaieducate.com/verify';
-const DEFAULT_PROGRAM = 'Applied GenAI Engineering Program';
-const TEMPLATE_PATH = path.join(__dirname, 'certificate-template.html');
-const LOGO_PATH = path.join(__dirname, '..', 'public', 'logo.png');
+const DEFAULT_COURSE_KEY = 'appliedGenAI';
+const SHEET_RANGE = 'Sheet1!A:F';
+
+// Crockford Base32: excludes I, L, O, U to avoid confusion with 1, 1, 0, V.
+// Keeps generated IDs unambiguous when read aloud or typed by hand.
+const ID_ALPHABET = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
+const ID_SUFFIX_LENGTH = 6;
 
 const BROWSER_CANDIDATES = [
   'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
@@ -40,6 +51,35 @@ function parseArgs(argv) {
   return args;
 }
 
+// Loads scripts/../.env.local into process.env (without overwriting anything
+// already set). Standalone Node scripts don't get Next.js's automatic env
+// loading, and pulling in the `dotenv` package for six lines of parsing isn't
+// worth a new dependency.
+function loadEnvLocal() {
+  const envPath = path.join(__dirname, '..', '.env.local');
+  if (!fs.existsSync(envPath)) return;
+
+  const content = fs.readFileSync(envPath, 'utf8');
+  content.split('\n').forEach((line) => {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) return;
+
+    const eqIndex = trimmed.indexOf('=');
+    if (eqIndex === -1) return;
+
+    const key = trimmed.slice(0, eqIndex).trim();
+    let value = trimmed.slice(eqIndex + 1).trim();
+    const isQuoted = (value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"));
+    if (isQuoted) {
+      value = value.slice(1, -1);
+    }
+
+    if (!(key in process.env)) {
+      process.env[key] = value;
+    }
+  });
+}
+
 function findBrowser() {
   const found = BROWSER_CANDIDATES.find((candidate) => fs.existsSync(candidate));
   if (!found) {
@@ -50,19 +90,81 @@ function findBrowser() {
   return found;
 }
 
-function toDataUri(filePath, mimeType) {
-  const buffer = fs.readFileSync(filePath);
-  return `data:${mimeType};base64,${buffer.toString('base64')}`;
+// Resolve which course config (highlights, skills, footer text, authority) to
+// render. --course selects a courses.js key directly; --program (the value
+// that also goes in the Google Sheet's program_name column) is matched
+// against each course's programName as a fallback.
+function resolveCourse({ course, program }) {
+  if (course) {
+    if (!COURSES[course]) {
+      throw new Error(`Unknown course key "${course}". Available: ${Object.keys(COURSES).join(', ')}`);
+    }
+    return COURSES[course];
+  }
+  if (program) {
+    const match = Object.values(COURSES).find(
+      (c) => c.programName.toLowerCase() === program.toLowerCase()
+    );
+    if (match) return match;
+  }
+  return COURSES[DEFAULT_COURSE_KEY];
 }
 
-function fillTemplate(template, values) {
-  return Object.entries(values).reduce(
-    (html, [key, value]) => html.split(`{{${key}}}`).join(value),
-    template
-  );
+function randomIdSuffix() {
+  let out = '';
+  for (let i = 0; i < ID_SUFFIX_LENGTH; i += 1) {
+    out += ID_ALPHABET[crypto.randomInt(ID_ALPHABET.length)];
+  }
+  return out;
 }
 
-async function generateCertificate({ id, name, date, program }) {
+function yearFromDate(dateStr) {
+  const match = dateStr.match(/\d{4}/);
+  return match ? match[0] : String(new Date().getFullYear());
+}
+
+// Returns a Sheets client + spreadsheetId, or null if credentials aren't
+// configured (the script then falls back to printing the row for manual entry).
+function getSheetsContext() {
+  const spreadsheetId = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
+  const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  const key = process.env.GOOGLE_PRIVATE_KEY;
+  if (!spreadsheetId || !email || !key) return null;
+
+  const { google } = require('googleapis');
+  const auth = new google.auth.JWT({
+    email,
+    key: key.replace(/\\n/g, '\n'),
+    // Full read/write scope: this script needs to append rows and check for ID
+    // collisions. The public /api/verify-certificate route requests
+    // spreadsheets.readonly regardless, so a leak of that route never grants
+    // write access even though the underlying service account can write here.
+    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+  });
+
+  return { sheets: google.sheets({ version: 'v4', auth }), spreadsheetId };
+}
+
+async function fetchExistingCertificateIds({ sheets, spreadsheetId }) {
+  const response = await sheets.spreadsheets.values.get({
+    spreadsheetId,
+    range: 'Sheet1!A2:A',
+  });
+  const rows = response.data.values || [];
+  return new Set(rows.map((row) => (row[0] || '').trim().toUpperCase()).filter(Boolean));
+}
+
+async function appendSheetRow({ sheets, spreadsheetId }, row) {
+  await sheets.spreadsheets.values.append({
+    spreadsheetId,
+    range: SHEET_RANGE,
+    valueInputOption: 'USER_ENTERED',
+    insertDataOption: 'INSERT_ROWS',
+    requestBody: { values: [row] },
+  });
+}
+
+async function generateCertificate({ id, name, date, issueDate, course, program }) {
   const outputDir = path.join(__dirname, '..', 'certificates');
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
@@ -71,18 +173,15 @@ async function generateCertificate({ id, name, date, program }) {
 
   const verifyUrl = `${VERIFY_BASE_URL}?id=${encodeURIComponent(id)}`;
   const qrDataUri = await QRCode.toDataURL(verifyUrl, { margin: 1, width: 300 });
-  const logoDataUri = toDataUri(LOGO_PATH, 'image/png');
+  const courseConfig = resolveCourse({ course, program });
 
-  const template = fs.readFileSync(TEMPLATE_PATH, 'utf8');
-  const issueDate = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-  const filledHtml = fillTemplate(template, {
-    student_name: name,
-    program_name: program,
-    completion_date: date,
-    cert_id: id,
-    issue_date: issueDate,
-    logo_src: logoDataUri,
-    qr_code_src: qrDataUri,
+  const filledHtml = renderCertificateHTML(courseConfig, {
+    studentName: name,
+    certificateId: id,
+    issuedOn: issueDate,
+    completedOn: date,
+    verifyUrl,
+    qrCode: `<img src="${qrDataUri}" alt="Verify QR">`,
   });
 
   const tmpHtmlPath = path.join(os.tmpdir(), `genaieducate-cert-${id}-${Date.now()}.html`);
@@ -112,28 +211,71 @@ async function generateCertificate({ id, name, date, program }) {
     fs.unlinkSync(tmpHtmlPath);
   }
 
-  return outputPath;
+  return { outputPath, programName: courseConfig.programName };
 }
 
 async function main() {
+  loadEnvLocal();
   const args = parseArgs(process.argv.slice(2));
 
-  if (!args.id || !args.name || !args.date) {
-    console.error('Usage: node scripts/generate-certificate.js --id GEE-2026-0001 --name "Rahul Sharma" --date "June 2026" [--program "Applied GenAI Engineering Program"]');
+  if (!args.name || !args.date) {
+    console.error('Usage: node scripts/generate-certificate.js --name "Rahul Sharma" --date "June 2026" [--course appliedGenAI] [--id GEE-2026-XXXXXX]');
+    console.error(`Available courses: ${Object.keys(COURSES).join(', ')}`);
     process.exit(1);
   }
 
-  const options = {
-    id: args.id.trim().toUpperCase(),
-    name: args.name.trim(),
-    date: args.date.trim(),
-    program: (args.program || DEFAULT_PROGRAM).trim(),
-  };
+  const name = args.name.trim();
+  const date = args.date.trim();
+  const course = args.course ? args.course.trim() : undefined;
+  const program = args.program ? args.program.trim() : undefined;
+  const issueDate = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
-  const outputPath = await generateCertificate(options);
-  console.log(`Certificate generated: ${outputPath}`);
-  console.log('Remember to add a matching row to the Google Sheet:');
-  console.log(`  ${options.id} | ${options.name} | ${options.program} | ${options.date} | <issue date> | active`);
+  const sheetsContext = getSheetsContext();
+  let existingIds = null;
+  if (sheetsContext) {
+    try {
+      existingIds = await fetchExistingCertificateIds(sheetsContext);
+    } catch (error) {
+      console.error('Warning: could not read existing certificate IDs from the Sheet (skipping collision check):', error.message);
+    }
+  }
+
+  let id;
+  if (args.id) {
+    id = args.id.trim().toUpperCase();
+    if (existingIds && existingIds.has(id)) {
+      console.error(`Certificate ID ${id} already exists in the Sheet. Choose a different ID.`);
+      process.exit(1);
+    }
+  } else {
+    const year = yearFromDate(date);
+    id = `GEE-${year}-${randomIdSuffix()}`;
+    let attempts = 0;
+    while (existingIds && existingIds.has(id) && attempts < 5) {
+      id = `GEE-${year}-${randomIdSuffix()}`;
+      attempts += 1;
+    }
+  }
+
+  const { outputPath, programName } = await generateCertificate({ id, name, date, issueDate, course, program });
+  console.log(`Certificate generated: ${outputPath} (ID: ${id})`);
+
+  const sheetRow = [id, name, programName, date, issueDate, 'active'];
+
+  if (!sheetsContext) {
+    console.log('Google Sheets credentials not found in .env.local — add this row manually:');
+    console.log(`  ${sheetRow.join(' | ')}`);
+    return;
+  }
+
+  try {
+    await appendSheetRow(sheetsContext, sheetRow);
+    console.log('Added the row to the Google Sheet automatically.');
+  } catch (error) {
+    console.error('Could not add the row to the Google Sheet automatically:', error.message);
+    console.log('Add it manually:');
+    console.log(`  ${sheetRow.join(' | ')}`);
+  }
 }
 
 main().catch((error) => {
