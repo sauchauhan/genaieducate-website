@@ -1,0 +1,37 @@
+{
+  "_readme": "Saurav's weekly curation file for The GenAI Brief. Edit this, then run `node scripts/generate-brief.js`. See SETUP_BRIEF.md. The generator synthesizes the week into two bullet panels (What Happened / Why You Should Care) plus an optional table, an optional 'also this week' list, an optional 'by the numbers' grid, and a takeaway. LAZY WEEK: leave items empty and it auto-fetches. CURATED WEEK: add items and set autoFetchCount to 0. HYBRID: add a few items and set autoFetchCount to how many more to auto-fetch. The AI drafts the table and the numbers (review them). Anything you hand-set below (comparisonTable, byTheNumbers, radar) overrides the AI.",
+
+  "date": "",
+  "dateRange": "",
+  "issueNumber": null,
+  "autoFetchCount": 6,
+
+  "items": [],
+
+  "_example_item": {
+    "title": "Optional hand-picked headline (leave items empty to auto-fetch)",
+    "url": "https://source.com/article",
+    "note": "Optional: your own angle. If blank, the AI summarizes from the title/blurb."
+  },
+
+  "comparisonTable": null,
+  "_example_comparisonTable": {
+    "title": "Frontier Model Pricing — July 2026 (USD per 1M tokens)",
+    "columns": ["Company", "Model", "Role", "Input", "Output"],
+    "rows": [
+      ["Anthropic", "Claude Opus 4.8", "Flagship reasoning", "$5", "$25"],
+      ["OpenAI", "GPT-5.6 Luna", "Fast and cheap", "$1", "$6"]
+    ]
+  },
+
+  "byTheNumbers": null,
+  "_example_byTheNumbers": [
+    { "value": "6×", "label": "cost gap, same task" },
+    { "value": "4", "label": "major launches this week" }
+  ],
+
+  "radar": null,
+  "_example_radar": [
+    { "term": "Company X", "text": "did a smaller thing worth a mention" }
+  ]
+}

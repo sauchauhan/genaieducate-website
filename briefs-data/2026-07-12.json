@@ -1,0 +1,40 @@
+{
+  "date": "2026-07-12",
+  "dateRange": "July 07 — July 13, 2026",
+  "issueNumber": 1,
+  "sample": true,
+  "generatedAt": "2026-07-12T09:00:00.000Z",
+  "whatHappened": [
+    { "term": "Grok 4.5", "text": "launched, xAI's fastest and most token-efficient model yet" },
+    { "term": "GPT-5.6", "text": "hit general availability in a three-tier family" },
+    { "term": "Meta", "text": "shipped its first-ever paid API model" },
+    { "term": "", "text": "Every lab made the same pitch this week: price, not capability" }
+  ],
+  "whyYouShouldCare": [
+    { "term": "", "text": "Unit economics shifted to cost per task, not cost per token" },
+    { "term": "", "text": "Agentic workflows burn 150K to 200K tokens, so routing matters" },
+    { "term": "Don't be loyal", "text": "to one vendor, build a model portfolio instead" },
+    { "term": "", "text": "Route cheap models for volume, premium models only for hard tasks" }
+  ],
+  "comparisonTable": {
+    "title": "Frontier Model Pricing — July 2026 (USD per 1M tokens)",
+    "columns": ["Company", "Model", "Role", "Input", "Output"],
+    "rows": [
+      ["Anthropic", "Claude Opus 4.8", "Flagship reasoning", "$5", "$25"],
+      ["OpenAI", "GPT-5.6 Sol", "Flagship", "$5", "$30"],
+      ["OpenAI", "GPT-5.6 Luna", "Fast and cheap", "$1", "$6"],
+      ["xAI", "Grok 4.5", "Efficient flagship", "$2", "$6"],
+      ["Meta", "Muse Spark 1.1", "Agentic / multimodal", "$1.25", "$4.25"],
+      ["Google", "Gemini 3.1 Pro", "Flagship", "$2", "$12"]
+    ]
+  },
+  "radar": null,
+  "whyItMatters": "The price gap between budget and premium models is now roughly 6x for the same task. The engineers who win this year are the ones who route intelligently: cheap models for the 80 percent of easy work, premium models only where quality genuinely matters. Vendor loyalty is now a cost, not a virtue.",
+  "byTheNumbers": [
+    { "value": "6×", "label": "cost gap, same task" },
+    { "value": "4", "label": "major launches this week" },
+    { "value": "200K", "label": "tokens per agent task" },
+    { "value": "$1", "label": "cheapest input tier" }
+  ],
+  "sources": []
+}

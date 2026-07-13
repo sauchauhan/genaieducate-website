@@ -40,6 +40,10 @@ yarn-error.log*
 # generated certificate PDFs (student data, never commit)
 /certificates
 
+# The GenAI Brief: generated LinkedIn teaser images (Saurav uploads manually).
+# The brief DATA (briefs-data/) IS committed — that is the archive.
+/briefs-output
+
 # local screenshots/test scratch
 /Saurav_tests
 

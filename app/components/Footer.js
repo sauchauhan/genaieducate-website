@@ -11,6 +11,7 @@ export default function Footer() {
         <div className="flex gap-6 font-body text-xs text-[#999]">
           <Link href="/program" className="no-underline text-inherit hover:text-cream transition-colors">Program</Link>
           <Link href="/about" className="no-underline text-inherit hover:text-cream transition-colors">About</Link>
+          <Link href="/this-week-in-ai" className="no-underline text-inherit hover:text-cream transition-colors">The GenAI Brief</Link>
           <Link href="/contact" className="no-underline text-inherit hover:text-cream transition-colors">Contact</Link>
           <Link href="/verify" className="no-underline text-inherit hover:text-cream transition-colors">Verify a Certificate →</Link>
         </div>
