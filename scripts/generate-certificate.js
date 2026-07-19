@@ -155,10 +155,13 @@ async function fetchExistingCertificateIds({ sheets, spreadsheetId }) {
 }
 
 async function appendSheetRow({ sheets, spreadsheetId }, row) {
+  // RAW (not USER_ENTERED): dates like "July 2026" are display text, not real
+  // dates. USER_ENTERED lets Sheets parse them and silently store a date
+  // serial number instead of the string.
   await sheets.spreadsheets.values.append({
     spreadsheetId,
     range: SHEET_RANGE,
-    valueInputOption: 'USER_ENTERED',
+    valueInputOption: 'RAW',
     insertDataOption: 'INSERT_ROWS',
     requestBody: { values: [row] },
   });

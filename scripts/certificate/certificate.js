@@ -20,16 +20,19 @@ const fs = require('fs');
 const path = require('path');
 const { ICONS } = require('./icons');
 
-// Logo lives in /public (shared with the Next.js site). Embed it as a base64
-// data URI so it resolves regardless of the render engine's working directory.
+// Logos live in /public (shared with the Next.js site). Embed them as base64
+// data URIs so they resolve regardless of the render engine's working directory.
 const LOGO_PATH = path.join(__dirname, '..', '..', 'public', 'Genai_educate_OfficialLogo.png');
+// Icon-only crop of the same logo (no wordmark) for the small signature seal,
+// where the full lockup is too small to read.
+const SEAL_LOGO_PATH = path.join(__dirname, '..', '..', 'public', 'genai-icon-mark.png');
 
-function loadLogoDataUri() {
+function loadImageDataUri(filePath) {
   try {
-    const buffer = fs.readFileSync(LOGO_PATH);
+    const buffer = fs.readFileSync(filePath);
     return `data:image/png;base64,${buffer.toString('base64')}`;
   } catch (err) {
-    console.error(`Warning: could not read logo at ${LOGO_PATH}, certificate will render without it.`);
+    console.error(`Warning: could not read image at ${filePath}, certificate will render without it.`);
     return '';
   }
 }
@@ -37,8 +40,8 @@ function loadLogoDataUri() {
 // ---- BRAND CONSTANTS (shared across all courses, never change per course) ----
 const BRAND = {
   instituteName: 'GenAIEducate',
-  logoSrc: loadLogoDataUri(),
-  sealText: 'GE',
+  logoSrc: loadImageDataUri(LOGO_PATH),
+  sealLogoSrc: loadImageDataUri(SEAL_LOGO_PATH),
 };
 
 // ---- Build the 4 highlight card HTML blocks from a course's highlights array ----
@@ -86,8 +89,8 @@ function renderCertificateHTML(course, student) {
   const replacements = {
     // Brand (fixed)
     logoSrc: BRAND.logoSrc,
+    sealLogoSrc: BRAND.sealLogoSrc,
     instituteName: BRAND.instituteName,
-    sealText: BRAND.sealText,
 
     // Course-level (set once per course)
     programName: course.programName,

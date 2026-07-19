@@ -282,11 +282,16 @@ body {
   border: 1px solid #1E5C4A;
 }
 .seal-inner {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 18px;
-  font-weight: 700;
-  color: #1E5C4A;
-  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.seal-inner img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
 }
 .authority-name { font-size: 13px; font-weight: 600; color: #2A2A2A; }
 .authority-title { font-size: 10px; font-weight: 400; color: #7A8580; line-height: 1.4; }
@@ -441,7 +446,7 @@ body {
       </div>
 
       <div class="authority-block">
-        <div class="seal-circle"><div class="seal-inner">{{sealText}}</div></div>
+        <div class="seal-circle"><div class="seal-inner"><img src="{{sealLogoSrc}}" alt="{{instituteName}}"></div></div>
         <div class="authority-name">{{authorityTitle}}</div>
         <div class="authority-title">{{instituteName}}</div>
       </div>
