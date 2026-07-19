@@ -77,10 +77,9 @@ export default function ProgramTiles() {
       id: "qa",
       icon: IconShieldCheck,
       tint: "forest",
-      eyebrow: "Coming soon",
-      title: "AI for QA",
-      desc: "A dedicated program for the QA fraternity, led by our newest instructor.",
-      disabled: true,
+      eyebrow: "For QA engineers",
+      title: "Applied GenAI for QA Program",
+      desc: "Three months, twelve weekends, built for QA and test automation engineers who want to build production-grade AI testing systems.",
     },
     {
       id: "workshops",
@@ -131,6 +130,29 @@ export default function ProgramTiles() {
     "Teams that need structured upskilling, not scattered YouTube tutorials",
     "Companies standardizing on AI tooling who want their engineers trained on it specifically",
     "L&D and engineering managers evaluating training partners for their team",
+  ];
+
+  const qaFacts = [
+    { n: "3", label: "Months (12 weekends)" },
+    { n: "04", label: "Core phases" },
+    { n: "4", label: "Projects" },
+    { n: "1", label: "Live cohort, not a recording" },
+  ];
+
+  const qaCurriculum = [
+    { month: "01", title: "Foundations & First Agents", weeks: "Week 1-3", focus: "LLM fundamentals, practical prompting for QA, Python snippets, building your first agent, Reflex UI layers, and drag-and-drop agent development using n8n", project: "Test Case Buddy — requirement-to-test-case generator agent", detail: "Move from basic prompts to functional QA tooling. Build an agent that analyzes requirements, generates test scenarios, writes the initial code layer, and exposes a clean interface using Reflex UI and automated n8n workflows." },
+    { month: "02", title: "Deep-Dive QA Agents & Autonomous Frameworks", weeks: "Week 4-6", focus: "Real-time agent execution, autonomous Playwright framework integration, state management", project: "Test Automation Assistant — Jira and qTest MCP-driven test automation agent", detail: "Build an agent that doesn't just generate code, but executes and corrects it in real time. Learn how to map dynamic web elements, handle flaky test steps, and implement autonomous validation loops that adapt to UI modifications on the fly." },
+    { month: "03", title: "Testing AI-Powered Applications (LLM QA)", weeks: "Week 7-9", focus: "Multi-agent systems to test a RAG app, Playwright Model Context Protocol (MCP), RAG evaluation, non-deterministic output testing", project: "Chatbot/RAG evaluation suite", detail: "Learn how to test systems that use AI. Master Retrieval-Augmented Generation (RAG) validation, handle non-deterministic software behavior, design automated adversarial tests for prompt injection and jailbreaking QA, and benchmark LLM outputs using semantic evaluation metrics." },
+    { month: "04", title: "QA AI Strategy and Responsible AI", weeks: "Week 10-12", focus: "AI automation suitability, QA AI governance, security and privacy guardrails, human-in-the-loop (HITL) triggers, ROI metrics", project: "QA AI Adoption & Governance Kit", detail: "Transition from engineer to architect. Define which test suites are suitable for AI acceleration, establish corporate compliance guardrails to prevent proprietary code leakage, implement human-in-the-loop checkpoints for critical paths, and build an ROI dashboard for AI-driven QA initiatives." },
+  ];
+
+  const qaAudience = [
+    "QA and test automation engineers trying to get AI implemented in their day-to-day testing process",
+  ];
+
+  const qaFormat = [
+    { title: "Weekend live sessions", body: "Twelve weekends, delivered completely live. No pre-recorded lectures. Expect deep-dive system architecture walkthroughs and interactive, live-coded builds." },
+    { title: "Continuous deployment", body: "Every phase ends with a real, working QA project or autonomous agent framework." },
   ];
 
   const workshopTopics = [
@@ -412,6 +434,124 @@ export default function ProgramTiles() {
               className="inline-block mt-10 sm:mt-12 text-center font-body text-sm font-semibold text-cream bg-terracotta px-7 py-3.5 rounded-sm no-underline"
             >
               Apply for next cohort
+            </a>
+          </div>
+        </section>
+      )}
+
+      {active === "qa" && (
+        <section className="bg-white px-5 py-12 sm:px-14 sm:py-20 lg:py-24">
+          <div className="max-w-[1100px] mx-auto">
+            <div className="flex items-center gap-4 mb-4">
+              <span className="font-mono text-xs tracking-[2px] uppercase text-terracotta font-semibold whitespace-nowrap">
+                For QA engineers
+              </span>
+              <span className="flex-1 h-px bg-[#E2DCCE]" />
+            </div>
+            <h2 className="font-heading text-3xl sm:text-[34px] text-forest font-bold mb-2 leading-tight">
+              The Applied GenAI for QA Program
+            </h2>
+            <p className="font-body text-base text-[#666] mb-10 sm:mb-12 max-w-[680px]">
+              Three months. Twelve weekends. Production-grade execution. Built
+              for QA and test automation engineers who want to build
+              production-ready AI testing systems, not just watch tutorials.
+            </p>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 mb-14 sm:mb-16">
+              {qaFacts.map((f) => (
+                <div key={f.label} className="bg-lightgray border border-[#E0E0E0] rounded p-6">
+                  <div className="font-mono text-3xl sm:text-4xl text-forest font-bold mb-2">
+                    {f.n}
+                  </div>
+                  <div className="font-body text-sm text-dark leading-snug">
+                    {f.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <h3 className="font-heading text-2xl text-forest font-bold mb-8 leading-tight">
+              The 12-week curriculum blueprint.
+            </h3>
+            <div className="border-t border-[#E2DCCE] mb-14 sm:mb-16">
+              {qaCurriculum.map((w) => (
+                <div key={w.month} className="py-8 border-b border-[#E2DCCE]">
+                  <div className="flex flex-col md:grid md:grid-cols-[80px_1fr_1fr] md:gap-6">
+                    <div className="font-mono text-3xl text-forest font-bold mb-3 md:mb-0">
+                      {w.month}
+                    </div>
+                    <div className="mb-4 md:mb-0">
+                      <div className="font-heading text-xl text-forest font-bold mb-2">
+                        {w.title}
+                      </div>
+                      <div className="font-mono text-xs text-cream bg-forest inline-block rounded-full px-3 py-1 mb-2">
+                        {w.weeks}
+                      </div>
+                      <div className="font-body text-sm text-forest font-semibold">
+                        &#127942; {w.project}
+                      </div>
+                    </div>
+                    <div>
+                      <span className="font-mono text-xs uppercase tracking-wide text-[#999] block mb-1">
+                        Focus
+                      </span>
+                      <span className="font-body text-[15px] text-dark leading-relaxed">
+                        {w.focus}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="font-body text-[15px] text-[#666] leading-relaxed mt-4 md:pl-[104px]">
+                    {w.detail}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
+              <div>
+                <h3 className="font-heading text-lg text-forest font-bold mb-5">
+                  Who this is for
+                </h3>
+                <div className="flex flex-col gap-4">
+                  {qaAudience.map((a) => (
+                    <div key={a} className="flex gap-4 items-start bg-lightgray border border-[#E0E0E0] border-l-4 border-l-terracotta rounded p-5">
+                      <span className="text-forest font-bold shrink-0">&#10003;</span>
+                      <p className="font-body text-[15px] text-dark leading-relaxed m-0">
+                        {a}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h3 className="font-heading text-lg text-forest font-bold mb-5">
+                  How it works
+                </h3>
+                <div className="flex flex-col gap-4">
+                  {qaFormat.map((f) => (
+                    <div key={f.title} className="flex gap-4 items-start bg-lightgray border border-[#E0E0E0] border-l-4 border-l-forest rounded p-5">
+                      <div className="shrink-0 w-8 h-8 flex items-center justify-center border border-forest rounded-sm text-forest font-bold text-sm">
+                        &#9670;
+                      </div>
+                      <div>
+                        <div className="font-body text-[15px] font-semibold text-dark mb-1">
+                          {f.title}
+                        </div>
+                        <p className="font-body text-[15px] text-[#666] leading-relaxed m-0">
+                          {f.body}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <a
+              href="https://wa.me/919326392693?text=Hi%20Saurav%2C%20I%27d%20like%20to%20know%20more%20about%20the%20Applied%20GenAI%20for%20QA%20Program."
+              className="inline-block mt-10 sm:mt-12 text-center font-body text-sm font-semibold text-cream bg-terracotta px-7 py-3.5 rounded-sm no-underline"
+            >
+              Talk to us about the QA program
             </a>
           </div>
         </section>
