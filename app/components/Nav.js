@@ -12,9 +12,15 @@ export default function Nav() {
           GenAI<span className="text-terracotta">Educate</span>
         </Link>
         <div className="flex items-center gap-5 sm:gap-9">
-          <div className="hidden sm:flex gap-9 font-body text-[15px] text-cream/85">
+          <div className="hidden sm:flex items-center gap-9 font-body text-[15px] text-cream/85">
             <Link href="/program" className="no-underline text-inherit hover:text-cream transition-colors">Program</Link>
             <Link href="/about" className="no-underline text-inherit hover:text-cream transition-colors">About</Link>
+            <Link href="/this-week-in-ai" className="flex items-center gap-2 no-underline text-inherit hover:text-cream transition-colors">
+              The GenAI Brief
+              <span className="font-mono text-[9px] font-bold tracking-[1px] text-cream bg-terracotta px-1.5 py-0.5 rounded-sm">
+                WEEKLY
+              </span>
+            </Link>
             <Link href="/contact" className="no-underline text-inherit hover:text-cream transition-colors">Contact</Link>
           </div>
           <Link
@@ -52,6 +58,16 @@ export default function Nav() {
             className="font-body text-[15px] text-cream/85 no-underline py-3 border-b border-cream/10"
           >
             About
+          </Link>
+          <Link
+            href="/this-week-in-ai"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2 font-body text-[15px] text-cream/85 no-underline py-3 border-b border-cream/10"
+          >
+            The GenAI Brief
+            <span className="font-mono text-[9px] font-bold tracking-[1px] text-cream bg-terracotta px-1.5 py-0.5 rounded-sm">
+              WEEKLY
+            </span>
           </Link>
           <Link
             href="/contact"
